@@ -8,11 +8,10 @@
 <link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #15161f;
-    --surface: #1e2029;
+    --bg: #14151d;
+    --surface: #1d1f29;
     --surface-2: #262838;
     --line: #33364a;
-    --line-soft: #292c3c;
     --text: #f2efe6;
     --muted: #9497a6;
     --gold: #d4a843;
@@ -23,6 +22,14 @@
     --teal-soft: rgba(79,189,186,.14);
     --rose: #d97a8c;
     --rose-soft: rgba(217,122,140,.14);
+
+    --sp-1: 4px;
+    --sp-2: 8px;
+    --sp-3: 12px;
+    --sp-4: 16px;
+    --sp-5: 18px;
+    --sp-6: 24px;
+    --gutter: 18px;
   }
   *{box-sizing:border-box;}
   html{-webkit-tap-highlight-color:transparent;}
@@ -32,7 +39,7 @@
     background:
       radial-gradient(680px 420px at 15% -8%, #272b48 0%, transparent 62%),
       radial-gradient(620px 520px at 92% 6%, #2b2138 0%, transparent 58%),
-      radial-gradient(500px 400px at 50% 110%, #1c2432 0%, transparent 60%),
+      radial-gradient(500px 400px at 50% 112%, #1c2432 0%, transparent 60%),
       var(--bg);
     font-family:'Manrope', sans-serif;
     color:var(--text);
@@ -45,7 +52,7 @@
   .phone{
     width:390px;
     max-width:100%;
-    background: linear-gradient(180deg, #1a1b25 0%, #131319 100%);
+    background: linear-gradient(180deg, #1a1b25 0%, #121218 100%);
     border-radius:38px;
     border:1px solid #2c2e3d;
     box-shadow:
@@ -69,14 +76,14 @@
 
   .statusbar{
     display:flex;justify-content:space-between;align-items:center;
-    padding:16px 24px 2px;
+    padding:16px var(--gutter) 0;
     font-size:12.5px;color:var(--muted);
     font-variant-numeric: tabular-nums;
     letter-spacing:.2px;
   }
 
   .app-header{
-    padding:10px 20px 16px;
+    padding:14px var(--gutter) var(--sp-5);
     display:flex;
     align-items:center;
     gap:13px;
@@ -105,7 +112,7 @@
     letter-spacing:-.2px;
   }
   .app-header p{
-    margin:2px 0 0;
+    margin:3px 0 0;
     font-size:12.5px;
     color:var(--muted);
     font-style:italic;
@@ -114,26 +121,22 @@
   .balance{
     display:flex;
     align-items:center;
-    gap:7px;
+    gap:6px;
     background:linear-gradient(180deg, var(--surface-2), var(--surface));
     border:1px solid var(--line);
-    padding:9px 13px;
+    padding:9px 14px;
     border-radius:15px;
     font-size:13.5px;
     font-weight:800;
     white-space:nowrap;
     box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
   }
-  .balance .dot{
-    width:9px;height:9px;border-radius:50%;
-    background: radial-gradient(circle at 35% 30%, #f6dfa0, var(--gold));
-  }
+  .balance .ico{display:flex; align-items:center;}
 
   .tabs{
     display:flex;
     gap:4px;
-    padding:0 16px 16px;
-    position:relative;
+    padding:0 var(--gutter) var(--sp-5);
   }
   .tab{
     flex:1;
@@ -146,7 +149,6 @@
     cursor:pointer;
     user-select:none;
     transition:background .18s ease, color .18s ease;
-    position:relative;
   }
   .tab.active{
     background:var(--surface);
@@ -154,7 +156,7 @@
     box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 4px 12px rgba(0,0,0,.25);
   }
 
-  .screen{padding:0 16px 24px;}
+  .screen{padding:0 var(--gutter) var(--sp-6);}
   .panel{display:none;}
   .panel.active{display:block; animation: fadeIn .28s ease;}
   @keyframes fadeIn{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
@@ -163,7 +165,7 @@
     display:flex;
     align-items:baseline;
     justify-content:space-between;
-    margin:6px 2px 14px;
+    margin:0 1px var(--sp-4);
   }
   .section-row h2{
     font-family:'PT Serif', serif;
@@ -180,14 +182,14 @@
   .grid{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:12px;
+    gap:var(--sp-3);
   }
 
   .card{
     background:linear-gradient(165deg, var(--surface) 0%, #1a1c26 100%);
     border:1px solid var(--line);
     border-radius:19px;
-    padding:13px;
+    padding:var(--sp-4);
     position:relative;
     overflow:hidden;
     transition:transform .16s ease, border-color .16s ease;
@@ -208,7 +210,7 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    margin-bottom:11px;
+    margin-bottom:var(--sp-3);
     position:relative;
     overflow:hidden;
   }
@@ -231,7 +233,7 @@
     gap:5px;
     font-size:11px;
     color:var(--muted);
-    margin-bottom:6px;
+    margin-bottom:var(--sp-2);
   }
   .rarity-tag .rdot{width:6px;height:6px;border-radius:50%;}
   .rarity-common .rdot{background:var(--teal); box-shadow:0 0 6px var(--teal);}
@@ -242,14 +244,14 @@
   .card h3{
     font-family:'PT Serif', serif;
     font-size:15px;
-    margin:0 0 4px;
+    margin:0 0 5px;
     line-height:1.25;
     letter-spacing:-.1px;
   }
   .card .edition{
     font-size:11.5px;
     color:var(--muted);
-    margin-bottom:11px;
+    margin-bottom:var(--sp-3);
   }
   .edition b{color:var(--text); font-weight:700;}
 
@@ -257,15 +259,22 @@
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:8px;
+    gap:var(--sp-2);
   }
   .price{
+    display:flex;
+    flex-direction:column;
+    gap:1px;
+  }
+  .price .amt{
+    display:flex;
+    align-items:center;
+    gap:5px;
     font-size:14.5px;
     font-weight:800;
     line-height:1.2;
   }
   .price small{
-    display:block;
     font-size:10px;
     font-weight:500;
     color:var(--muted);
@@ -298,7 +307,7 @@
 
   .sold-badge{
     position:absolute;
-    top:12px; right:12px;
+    top:var(--sp-3); right:var(--sp-3);
     background:rgba(20,21,29,.88);
     backdrop-filter: blur(4px);
     border:1px solid var(--line);
@@ -310,16 +319,15 @@
     z-index:2;
   }
 
-  /* Resale + inventory rows */
   .resale-item, .inv-item{
     display:flex;
     align-items:center;
-    gap:12px;
+    gap:var(--sp-3);
     background:linear-gradient(165deg, var(--surface) 0%, #1a1c26 100%);
     border:1px solid var(--line);
     border-radius:17px;
-    padding:11px;
-    margin-bottom:10px;
+    padding:var(--sp-3);
+    margin-bottom:var(--sp-2);
     opacity:0;
     animation: cardIn .4s ease forwards;
   }
@@ -334,31 +342,35 @@
   .resale-info, .inv-info{flex:1; min-width:0;}
   .resale-info h4, .inv-info h4{
     font-family:'PT Serif', serif;
-    margin:0 0 2px;
+    margin:0 0 3px;
     font-size:14px;
   }
   .resale-info .meta, .inv-info .meta{
     font-size:11.5px;
     color:var(--muted);
+    display:flex; align-items:center; gap:4px;
   }
   .resale-price{ text-align:right; }
   .resale-price .now{
+    display:flex; align-items:center; justify-content:flex-end; gap:5px;
     font-size:14.5px;
     font-weight:800;
     color:var(--gold);
   }
   .resale-price .was{
+    display:flex; align-items:center; justify-content:flex-end; gap:4px;
     font-size:11px;
     color:var(--muted);
     text-decoration:line-through;
+    margin-top:2px;
   }
 
   .empty-state{
     text-align:center;
-    padding:54px 20px;
+    padding:56px 20px;
     color:var(--muted);
   }
-  .empty-state svg{width:56px;height:56px;margin-bottom:16px;opacity:.55;}
+  .empty-state svg{width:56px;height:56px;margin-bottom:var(--sp-4);opacity:.55;}
   .empty-state p{margin:0; font-size:13.5px; line-height:1.55;}
 
   .list-btn{
@@ -390,13 +402,14 @@
     pointer-events:none;
     z-index:50;
     box-shadow:0 24px 48px rgba(0,0,0,.4);
+    display:flex; align-items:center; gap:6px;
   }
   .toast.show{opacity:1; transform:translate(-50%, 0);}
 
   .ff-btn{
     display:block;
     width:100%;
-    margin:6px 0 0;
+    margin:var(--sp-2) 0 0;
     background:none;
     border:1px dashed var(--line);
     color:var(--muted);
@@ -405,7 +418,6 @@
     padding:11px 14px;
     border-radius:13px;
     cursor:pointer;
-    transition:border-color .15s ease, color .15s ease;
   }
   .ff-btn:active{transform:scale(.98);}
 </style>
@@ -422,7 +434,7 @@
       <h1>Витрина</h1>
       <p>лимитированные подарки в чате</p>
     </div>
-    <div class="balance"><span class="dot"></span><span id="balanceValue">124 ⭐</span></div>
+    <div class="balance"><span class="ico" id="balanceIco"></span><span id="balanceValue">124</span></div>
   </div>
 
   <div class="tabs">
@@ -433,7 +445,6 @@
 
   <div class="screen">
 
-    <!-- MARKET -->
     <div class="panel active" id="panel-market">
       <div class="section-row">
         <h2>Свежий дроп</h2>
@@ -443,7 +454,6 @@
       <button class="ff-btn" id="ffBtn">промотать время вперёд →</button>
     </div>
 
-    <!-- RESALE -->
     <div class="panel" id="panel-resale">
       <div class="section-row">
         <h2>Перепродажа</h2>
@@ -452,7 +462,6 @@
       <div id="resaleList"></div>
     </div>
 
-    <!-- INVENTORY -->
     <div class="panel" id="panel-inventory">
       <div class="section-row">
         <h2>Моя коллекция</h2>
@@ -467,6 +476,18 @@
 <div class="toast" id="toast"></div>
 
 <script>
+// ---- star currency icon (custom, gradient-filled — replaces plain emoji) ----
+let __sid = 0;
+function star(size){
+  const id = 'star' + (++__sid);
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" style="display:inline-block;vertical-align:-2px">
+    <defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fbe8ae"/><stop offset="1" stop-color="#d4a843"/>
+    </linearGradient></defs>
+    <path d="M12 2.5l2.87 6.53 7.13.62-5.4 4.66 1.63 6.95L12 17.4l-6.23 3.86 1.63-6.95L2 9.65l7.13-.62z" fill="url(#${id})"/>
+  </svg>`;
+}
+
 // ---- richer illustrations (layered SVG, gradient defs per instance for unique ids) ----
 let __uid = 0;
 const ART = {
@@ -538,10 +559,11 @@ const resaleList = document.getElementById('resaleList');
 const invList = document.getElementById('invList');
 const toast = document.getElementById('toast');
 const balanceEl = document.getElementById('balanceValue');
+document.getElementById('balanceIco').innerHTML = star(14);
 let balance = 124;
 
 function showToast(msg){
-  toast.textContent = msg;
+  toast.innerHTML = msg;
   toast.classList.add('show');
   clearTimeout(showToast._t);
   showToast._t = setTimeout(()=>toast.classList.remove('show'), 2200);
@@ -559,7 +581,7 @@ function renderMarket(){
       <h3>${it.name}</h3>
       <div class="edition">осталось <b>${it.left}</b> из ${it.total}</div>
       <div class="buy-row">
-        <div class="price">${it.price} ⭐<small>цена дропа</small></div>
+        <div class="price"><div class="amt">${star(13)}${it.price}</div><small>цена дропа</small></div>
         <button class="buy-btn ${owned?'owned':''}" ${soldOut||owned?'disabled':''} onclick="buy('${it.id}')">
           ${owned ? 'у вас есть' : soldOut ? 'нет мест' : 'купить'}
         </button>
@@ -571,11 +593,11 @@ function renderMarket(){
 function buy(id){
   const it = items.find(i => i.id === id);
   if (!it || it.left <= 0) return;
-  if (balance < it.price){ showToast('Не хватает ⭐ на балансе'); return; }
+  if (balance < it.price){ showToast('Не хватает ' + star(13) + ' на балансе'); return; }
   balance -= it.price;
   it.left -= 1;
   inventory.push({ itemId: it.id, name: it.name, rarity: it.rarity, art: it.art, boughtFor: it.price });
-  balanceEl.textContent = balance + ' ⭐';
+  balanceEl.textContent = balance;
   document.getElementById('invCount').textContent = '(' + inventory.length + ')';
   showToast(`«${it.name}» теперь ваш`);
   renderMarket();
@@ -596,7 +618,7 @@ function renderInventory(){
       <div class="art" style="background:${COLORS[x.rarity]}22">${ART[x.art](COLORS[x.rarity], x.itemId+idx)}</div>
       <div class="inv-info">
         <h4>${x.name}</h4>
-        <div class="meta">куплено за ${x.boughtFor} ⭐ · ${LABELS[x.rarity]}</div>
+        <div class="meta">куплено за ${x.boughtFor}${star(11)} · ${LABELS[x.rarity]}</div>
       </div>
       <button class="list-btn" onclick="listForSale(${idx})">выставить</button>
     </div>
@@ -623,8 +645,8 @@ function renderResale(){
         <div class="meta">не в дропе · ${LABELS[r.rarity]}</div>
       </div>
       <div class="resale-price">
-        <div class="now">${r.now} ⭐</div>
-        <div class="was">было ${r.mint} ⭐</div>
+        <div class="now">${r.now}${star(13)}</div>
+        <div class="was">было ${r.mint}${star(10)}</div>
       </div>
     </div>
   `).join('');
