@@ -5,7 +5,9 @@
     "gem": 80,
     "mask": 40,
     "bolt": 70,
-    "medal": 30
+    "medal": 30,
+    "test1": 999,
+    "test2": 999
   },
   "inventories": {},
   "invoices": {}
