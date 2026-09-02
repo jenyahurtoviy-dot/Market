@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Витрина коллекционных подарков</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #15161f;
+    --surface: #1e2029;
+    --surface-2: #262838;
+    --line: #33364a;
+    --text: #f2efe6;
+    --muted: #9497a6;
+    --gold: #d4a843;
+    --gold-soft: rgba(212,168,67,.14);
+    --violet: #8b7fe8;
+    --violet-soft: rgba(139,127,232,.14);
+    --teal: #4fbdba;
+    --teal-soft: rgba(79,189,186,.14);
+    --rose: #d97a8c;
+    --rose-soft: rgba(217,122,140,.14);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(700px 420px at 20% -10%, #262a44 0%, transparent 60%),
+      radial-gradient(600px 500px at 90% 10%, #2a2036 0%, transparent 55%),
+      var(--bg);
+    font-family:'Manrope', sans-serif;
+    color:var(--text);
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:40px 16px 60px;
+  }
+
+  .phone{
+    width:390px;
+    max-width:100%;
+    background: linear-gradient(180deg, #191a24 0%, #14151d 100%);
+    border-radius:34px;
+    border:1px solid #2c2e3d;
+    box-shadow: 0 40px 90px rgba(0,0,0,.55), inset 0 0 0 6px #0d0e14;
+    overflow:hidden;
+  }
+
+  .statusbar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:14px 22px 4px;
+    font-size:13px;color:var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .app-header{
+    padding:6px 20px 16px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .app-header .avatar{
+    width:42px;height:42px;border-radius:13px;
+    background: conic-gradient(from 220deg, var(--gold), var(--rose), var(--violet), var(--gold));
+    flex-shrink:0;
+  }
+  .app-header .titles{flex:1; min-width:0;}
+  .app-header h1{
+    font-family:'PT Serif', serif;
+    font-size:19px;
+    font-weight:700;
+    margin:0;
+    line-height:1.15;
+  }
+  .app-header p{
+    margin:2px 0 0;
+    font-size:12.5px;
+    color:var(--muted);
+  }
+  .balance{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    padding:8px 12px;
+    border-radius:14px;
+    font-size:13.5px;
+    font-weight:700;
+    white-space:nowrap;
+  }
+  .balance .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);}
+
+  .tabs{
+    display:flex;
+    gap:4px;
+    padding:0 16px 14px;
+  }
+  .tab{
+    flex:1;
+    text-align:center;
+    padding:10px 6px;
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--muted);
+    border-radius:12px;
+    cursor:pointer;
+    user-select:none;
+    transition:background .15s, color .15s;
+  }
+  .tab.active{
+    background:var(--surface);
+    color:var(--text);
+  }
+
+  .screen{padding:0 16px 22px;}
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .section-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin:6px 2px 12px;
+  }
+  .section-row h2{
+    font-family:'PT Serif', serif;
+    font-size:16px;
+    font-weight:700;
+    margin:0;
+  }
+  .section-row span{
+    font-size:12px;
+    color:var(--muted);
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:12px;
+    position:relative;
+    overflow:hidden;
+    transition:transform .15s ease;
+  }
+  .card:active{transform:scale(.97);}
+
+  .card .art{
+    height:96px;
+    border-radius:13px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:10px;
+  }
+  .card .art svg{width:58px;height:58px;}
+
+  .rarity-common .art{background:var(--teal-soft);}
+  .rarity-rare .art{background:var(--violet-soft);}
+  .rarity-epic .art{background:var(--rose-soft);}
+  .rarity-legendary .art{background:var(--gold-soft);}
+
+  .rarity-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-size:11px;
+    color:var(--muted);
+    margin-bottom:6px;
+  }
+  .rarity-tag .rdot{width:6px;height:6px;border-radius:50%;}
+  .rarity-common .rdot{background:var(--teal);}
+  .rarity-rare .rdot{background:var(--violet);}
+  .rarity-epic .rdot{background:var(--rose);}
+  .rarity-legendary .rdot{background:var(--gold);}
+
+  .card h3{
+    font-family:'PT Serif', serif;
+    font-size:15px;
+    margin:0 0 3px;
+    line-height:1.2;
+  }
+  .card .edition{
+    font-size:11.5px;
+    color:var(--muted);
+    margin-bottom:10px;
+  }
+  .edition b{color:var(--text);}
+
+  .buy-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+  }
+  .price{
+    font-size:14.5px;
+    font-weight:800;
+  }
+  .price small{
+    display:block;
+    font-size:10.5px;
+    font-weight:500;
+    color:var(--muted);
+  }
+  .buy-btn{
+    border:none;
+    background:var(--text);
+    color:#15161f;
+    font-weight:700;
+    font-size:12.5px;
+    padding:8px 14px;
+    border-radius:11px;
+    cursor:pointer;
+  }
+  .buy-btn:disabled{
+    background:var(--surface-2);
+    color:var(--muted);
+    cursor:default;
+  }
+  .buy-btn.owned{
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--muted);
+  }
+
+  .sold-badge{
+    position:absolute;
+    top:12px; right:12px;
+    background:rgba(20,21,29,.85);
+    border:1px solid var(--line);
+    font-size:10.5px;
+    padding:4px 8px;
+    border-radius:8px;
+    color:var(--rose);
+    font-weight:700;
+  }
+
+  /* Resale list */
+  .resale-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:10px;
+    margin-bottom:10px;
+  }
+  .resale-item .art{
+    width:52px;height:52px;border-radius:12px;
+    flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .resale-item .art svg{width:30px;height:30px;}
+  .resale-info{flex:1; min-width:0;}
+  .resale-info h4{
+    font-family:'PT Serif', serif;
+    margin:0 0 2px;
+    font-size:14px;
+  }
+  .resale-info .meta{
+    font-size:11.5px;
+    color:var(--muted);
+  }
+  .resale-price{
+    text-align:right;
+  }
+  .resale-price .now{
+    font-size:14.5px;
+    font-weight:800;
+    color:var(--gold);
+  }
+  .resale-price .was{
+    font-size:11px;
+    color:var(--muted);
+    text-decoration:line-through;
+  }
+
+  .empty-state{
+    text-align:center;
+    padding:50px 20px;
+    color:var(--muted);
+  }
+  .empty-state svg{width:54px;height:54px;margin-bottom:14px;opacity:.7;}
+  .empty-state p{margin:0; font-size:13.5px; line-height:1.5;}
+
+  .inv-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:10px;
+    margin-bottom:10px;
+  }
+  .inv-item .art{
+    width:52px;height:52px;border-radius:12px;
+    flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .inv-item .art svg{width:30px;height:30px;}
+  .inv-info{flex:1;}
+  .inv-info h4{font-family:'PT Serif', serif; margin:0 0 2px; font-size:14px;}
+  .inv-info .meta{font-size:11.5px; color:var(--muted);}
+  .list-btn{
+    border:1px solid var(--line);
+    background:transparent;
+    color:var(--text);
+    font-size:12px;
+    font-weight:700;
+    padding:7px 12px;
+    border-radius:10px;
+    cursor:pointer;
+  }
+
+  .toast{
+    position:fixed;
+    left:50%;
+    bottom:28px;
+    transform:translate(-50%, 20px);
+    background:#f2efe6;
+    color:#15161f;
+    padding:12px 18px;
+    border-radius:13px;
+    font-size:13.5px;
+    font-weight:700;
+    opacity:0;
+    transition:opacity .25s, transform .25s;
+    pointer-events:none;
+    z-index:50;
+    box-shadow:0 20px 40px rgba(0,0,0,.35);
+  }
+  .toast.show{opacity:1; transform:translate(-50%, 0);}
+
+  .ff-btn{
+    display:block;
+    margin:4px auto 0;
+    background:none;
+    border:1px dashed var(--line);
+    color:var(--muted);
+    font-size:11.5px;
+    padding:8px 14px;
+    border-radius:11px;
+    cursor:pointer;
+  }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><span>••••</span></div>
+
+  <div class="app-header">
+    <div class="avatar"></div>
+    <div class="titles">
+      <h1>Витрина</h1>
+      <p>лимитированные подарки в чате</p>
+    </div>
+    <div class="balance"><span class="dot"></span><span id="balanceValue">124 ⭐</span></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="market">Маркет</div>
+    <div class="tab" data-tab="resale">Перепродажа</div>
+    <div class="tab" data-tab="inventory">Мои <span id="invCount"></span></div>
+  </div>
+
+  <div class="screen">
+
+    <!-- MARKET -->
+    <div class="panel active" id="panel-market">
+      <div class="section-row">
+        <h2>Свежий дроп</h2>
+        <span>обновление каждый понедельник</span>
+      </div>
+      <div class="grid" id="marketGrid"></div>
+      <button class="ff-btn" id="ffBtn">промотать время вперёд →</button>
+    </div>
+
+    <!-- RESALE -->
+    <div class="panel" id="panel-resale">
+      <div class="section-row">
+        <h2>Перепродажа</h2>
+        <span id="resaleCount"></span>
+      </div>
+      <div id="resaleList"></div>
+    </div>
+
+    <!-- INVENTORY -->
+    <div class="panel" id="panel-inventory">
+      <div class="section-row">
+        <h2>Моя коллекция</h2>
+        <span></span>
+      </div>
+      <div id="invList"></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ---- illustrations (simple abstract shapes per item, no external assets) ----
+const ART = {
+  sneaker: c => `<svg viewBox="0 0 64 64"><path d="M6 40c4-2 8-4 10-8 3-6 8-9 14-9 3 0 5 1 7 3 4 4 9 5 15 5 4 5 6 9 6 13H6c-2 0-3-1-3-2s1-2 3-2z" fill="${c}"/><path d="M10 38c3-1 6-3 8-6" stroke="#15161f" stroke-width="2" fill="none" opacity=".35"/></svg>`,
+  crown: c => `<svg viewBox="0 0 64 64"><path d="M10 44l4-20 10 10 8-16 8 16 10-10 4 20z" fill="${c}"/><rect x="8" y="44" width="48" height="6" rx="2" fill="${c}"/></svg>`,
+  gem: c => `<svg viewBox="0 0 64 64"><polygon points="32,8 50,24 40,56 24,56 14,24" fill="${c}"/><polygon points="32,8 50,24 32,30 14,24" fill="#ffffff" opacity=".25"/></svg>`,
+  mask: c => `<svg viewBox="0 0 64 64"><ellipse cx="32" cy="34" rx="24" ry="18" fill="${c}"/><circle cx="22" cy="32" r="4" fill="#15161f" opacity=".6"/><circle cx="42" cy="32" r="4" fill="#15161f" opacity=".6"/></svg>`,
+  bolt: c => `<svg viewBox="0 0 64 64"><polygon points="36,4 14,36 28,36 22,60 50,28 34,28" fill="${c}"/></svg>`,
+  medal: c => `<svg viewBox="0 0 64 64"><path d="M20 10l6 14h-12z" fill="${c}" opacity=".7"/><path d="M44 10l-6 14h12z" fill="${c}" opacity=".7"/><circle cx="32" cy="40" r="18" fill="${c}"/><circle cx="32" cy="40" r="10" fill="#15161f" opacity=".2"/></svg>`
+};
+
+const COLORS = { common:'#4fbdba', rare:'#8b7fe8', epic:'#d97a8c', legendary:'#d4a843' };
+const LABELS = { common:'обычный', rare:'редкий', epic:'эпический', legendary:'легендарный' };
+
+let items = [
+  { id:'sneak', name:'Кроссы «Полночь»', rarity:'common', art:'sneaker', total:120, left:63, price:9 },
+  { id:'crown', name:'Корона основателя', rarity:'legendary', art:'crown', total:10, left:2, price:75 },
+  { id:'gem',   name:'Осколок звезды', rarity:'rare', art:'gem', total:80, left:31, price:19 },
+  { id:'mask',  name:'Маска карнавала', rarity:'epic', art:'mask', total:40, left:6, price:38 },
+  { id:'bolt',  name:'Разряд', rarity:'rare', art:'bolt', total:70, left:0, price:22 },
+  { id:'medal', name:'Знак старожила', rarity:'epic', art:'medal', total:30, left:1, price:45 }
+];
+
+let inventory = []; // {itemRef, boughtFor, listed:false, listPrice}
+let resale = [
+  { name:'Разряд', art:'bolt', rarity:'rare', mint:22, now:96 },
+  { name:'Знак старожила', art:'medal', rarity:'epic', mint:45, now:310 }
+];
+
+const marketGrid = document.getElementById('marketGrid');
+const resaleList = document.getElementById('resaleList');
+const invList = document.getElementById('invList');
+const toast = document.getElementById('toast');
+const balanceEl = document.getElementById('balanceValue');
+let balance = 124;
+
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(()=>toast.classList.remove('show'), 2200);
+}
+
+function renderMarket(){
+  marketGrid.innerHTML = items.map(it => {
+    const soldOut = it.left <= 0;
+    const owned = inventory.some(x => x.itemId === it.id);
+    return `
+    <div class="card rarity-${it.rarity}">
+      ${soldOut ? '<div class="sold-badge">раскуплено</div>' : ''}
+      <div class="art">${ART[it.art](COLORS[it.rarity])}</div>
+      <div class="rarity-tag"><span class="rdot"></span>${LABELS[it.rarity]}</div>
+      <h3>${it.name}</h3>
+      <div class="edition">осталось <b>${it.left}</b> из ${it.total}</div>
+      <div class="buy-row">
+        <div class="price">${it.price} ⭐<small>цена дропа</small></div>
+        <button class="buy-btn ${owned?'owned':''}" ${soldOut||owned?'disabled':''} onclick="buy('${it.id}')">
+          ${owned ? 'у вас есть' : soldOut ? 'нет мест' : 'купить'}
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function buy(id){
+  const it = items.find(i => i.id === id);
+  if (!it || it.left <= 0) return;
+  if (balance < it.price){ showToast('Не хватает ⭐ на балансе'); return; }
+  balance -= it.price;
+  it.left -= 1;
+  inventory.push({ itemId: it.id, name: it.name, rarity: it.rarity, art: it.art, boughtFor: it.price });
+  balanceEl.textContent = balance + ' ⭐';
+  document.getElementById('invCount').textContent = '(' + inventory.length + ')';
+  showToast(`«${it.name}» теперь ваш`);
+  renderMarket();
+  renderInventory();
+}
+
+function renderInventory(){
+  if (inventory.length === 0){
+    invList.innerHTML = `
+      <div class="empty-state">
+        ${ART.gem('#4a4d5c')}
+        <p>Пока пусто. Купите что-нибудь на вкладке «Маркет» — сюда попадёт всё, чем вы владеете.</p>
+      </div>`;
+    return;
+  }
+  invList.innerHTML = inventory.map((x, idx) => `
+    <div class="inv-item">
+      <div class="art" style="background:${COLORS[x.rarity]}22">${ART[x.art](COLORS[x.rarity])}</div>
+      <div class="inv-info">
+        <h4>${x.name}</h4>
+        <div class="meta">куплено за ${x.boughtFor} ⭐ · ${LABELS[x.rarity]}</div>
+      </div>
+      <button class="list-btn" onclick="listForSale(${idx})">выставить</button>
+    </div>
+  `).join('');
+}
+
+function listForSale(idx){
+  const x = inventory[idx];
+  showToast(`«${x.name}» выставлен на перепродажу`);
+  resale.unshift({ name:x.name, art:x.art, rarity:x.rarity, mint:x.boughtFor, now: Math.round(x.boughtFor * (2 + Math.random()*3)) });
+  inventory.splice(idx,1);
+  document.getElementById('invCount').textContent = '(' + inventory.length + ')';
+  renderInventory();
+  renderResale();
+}
+
+function renderResale(){
+  document.getElementById('resaleCount').textContent = resale.length + ' предложений';
+  resaleList.innerHTML = resale.map(r => `
+    <div class="resale-item">
+      <div class="art" style="background:${COLORS[r.rarity]}22">${ART[r.art](COLORS[r.rarity])}</div>
+      <div class="resale-info">
+        <h4>${r.name}</h4>
+        <div class="meta">не в дропе · ${LABELS[r.rarity]}</div>
+      </div>
+      <div class="resale-price">
+        <div class="now">${r.now} ⭐</div>
+        <div class="was">было ${r.mint} ⭐</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// fast-forward simulation: sells out a random low-stock item and bumps resale prices
+document.getElementById('ffBtn').addEventListener('click', () => {
+  const candidates = items.filter(i => i.left > 0 && i.left <= 5);
+  if (candidates.length){
+    const it = candidates[Math.floor(Math.random()*candidates.length)];
+    it.left = 0;
+    resale.unshift({ name: it.name, art: it.art, rarity: it.rarity, mint: it.price, now: Math.round(it.price * (2.5 + Math.random()*4)) });
+    showToast(`«${it.name}» раскуплен — появился на перепродаже`);
+  } else {
+    resale.forEach(r => r.now = Math.round(r.now * (1.05 + Math.random()*0.2)));
+    showToast('Цены на перепродаже подросли');
+  }
+  renderMarket();
+  renderResale();
+});
+
+// tabs
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+renderMarket();
+renderResale();
+renderInventory();
+</script>
+
+</body>
+</html>
