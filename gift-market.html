@@ -5,13 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Витрина коллекционных подарков</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg: #15161f;
     --surface: #1e2029;
     --surface-2: #262838;
     --line: #33364a;
+    --line-soft: #292c3c;
     --text: #f2efe6;
     --muted: #9497a6;
     --gold: #d4a843;
@@ -24,80 +25,115 @@
     --rose-soft: rgba(217,122,140,.14);
   }
   *{box-sizing:border-box;}
+  html{-webkit-tap-highlight-color:transparent;}
   body{
     margin:0;
     min-height:100vh;
     background:
-      radial-gradient(700px 420px at 20% -10%, #262a44 0%, transparent 60%),
-      radial-gradient(600px 500px at 90% 10%, #2a2036 0%, transparent 55%),
+      radial-gradient(680px 420px at 15% -8%, #272b48 0%, transparent 62%),
+      radial-gradient(620px 520px at 92% 6%, #2b2138 0%, transparent 58%),
+      radial-gradient(500px 400px at 50% 110%, #1c2432 0%, transparent 60%),
       var(--bg);
     font-family:'Manrope', sans-serif;
     color:var(--text);
     display:flex;
     align-items:flex-start;
     justify-content:center;
-    padding:40px 16px 60px;
+    padding:44px 16px 70px;
   }
 
   .phone{
     width:390px;
     max-width:100%;
-    background: linear-gradient(180deg, #191a24 0%, #14151d 100%);
-    border-radius:34px;
+    background: linear-gradient(180deg, #1a1b25 0%, #131319 100%);
+    border-radius:38px;
     border:1px solid #2c2e3d;
-    box-shadow: 0 40px 90px rgba(0,0,0,.55), inset 0 0 0 6px #0d0e14;
+    box-shadow:
+      0 50px 110px rgba(0,0,0,.6),
+      0 4px 18px rgba(0,0,0,.35),
+      inset 0 0 0 6px #0d0e14,
+      inset 0 1px 0 rgba(255,255,255,.03);
     overflow:hidden;
+    position:relative;
+  }
+
+  .notch{
+    position:absolute;
+    top:0; left:50%;
+    transform:translateX(-50%);
+    width:120px; height:22px;
+    background:#0d0e14;
+    border-radius:0 0 16px 16px;
+    z-index:5;
   }
 
   .statusbar{
     display:flex;justify-content:space-between;align-items:center;
-    padding:14px 22px 4px;
-    font-size:13px;color:var(--muted);
+    padding:16px 24px 2px;
+    font-size:12.5px;color:var(--muted);
     font-variant-numeric: tabular-nums;
+    letter-spacing:.2px;
   }
 
   .app-header{
-    padding:6px 20px 16px;
+    padding:10px 20px 16px;
     display:flex;
     align-items:center;
-    gap:12px;
+    gap:13px;
   }
   .app-header .avatar{
-    width:42px;height:42px;border-radius:13px;
+    width:44px;height:44px;border-radius:14px;
     background: conic-gradient(from 220deg, var(--gold), var(--rose), var(--violet), var(--gold));
     flex-shrink:0;
+    position:relative;
+    box-shadow: 0 6px 16px rgba(212,168,67,.25);
+  }
+  .app-header .avatar::after{
+    content:'';
+    position:absolute; inset:9px;
+    background:var(--bg);
+    border-radius:8px;
+    clip-path: polygon(50% 8%, 92% 50%, 50% 92%, 8% 50%);
   }
   .app-header .titles{flex:1; min-width:0;}
   .app-header h1{
     font-family:'PT Serif', serif;
-    font-size:19px;
+    font-size:19.5px;
     font-weight:700;
     margin:0;
     line-height:1.15;
+    letter-spacing:-.2px;
   }
   .app-header p{
     margin:2px 0 0;
     font-size:12.5px;
     color:var(--muted);
+    font-style:italic;
+    font-family:'PT Serif', serif;
   }
   .balance{
     display:flex;
     align-items:center;
-    gap:6px;
-    background:var(--surface);
+    gap:7px;
+    background:linear-gradient(180deg, var(--surface-2), var(--surface));
     border:1px solid var(--line);
-    padding:8px 12px;
-    border-radius:14px;
+    padding:9px 13px;
+    border-radius:15px;
     font-size:13.5px;
-    font-weight:700;
+    font-weight:800;
     white-space:nowrap;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
   }
-  .balance .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);}
+  .balance .dot{
+    width:9px;height:9px;border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, #f6dfa0, var(--gold));
+  }
 
   .tabs{
     display:flex;
     gap:4px;
-    padding:0 16px 14px;
+    padding:0 16px 16px;
+    position:relative;
   }
   .tab{
     flex:1;
@@ -109,31 +145,35 @@
     border-radius:12px;
     cursor:pointer;
     user-select:none;
-    transition:background .15s, color .15s;
+    transition:background .18s ease, color .18s ease;
+    position:relative;
   }
   .tab.active{
     background:var(--surface);
     color:var(--text);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 4px 12px rgba(0,0,0,.25);
   }
 
-  .screen{padding:0 16px 22px;}
+  .screen{padding:0 16px 24px;}
   .panel{display:none;}
-  .panel.active{display:block;}
+  .panel.active{display:block; animation: fadeIn .28s ease;}
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
 
   .section-row{
     display:flex;
     align-items:baseline;
     justify-content:space-between;
-    margin:6px 2px 12px;
+    margin:6px 2px 14px;
   }
   .section-row h2{
     font-family:'PT Serif', serif;
-    font-size:16px;
+    font-size:16.5px;
     font-weight:700;
     margin:0;
+    letter-spacing:-.1px;
   }
   .section-row span{
-    font-size:12px;
+    font-size:11.5px;
     color:var(--muted);
   }
 
@@ -144,30 +184,46 @@
   }
 
   .card{
-    background:var(--surface);
+    background:linear-gradient(165deg, var(--surface) 0%, #1a1c26 100%);
     border:1px solid var(--line);
-    border-radius:18px;
-    padding:12px;
+    border-radius:19px;
+    padding:13px;
     position:relative;
     overflow:hidden;
-    transition:transform .15s ease;
+    transition:transform .16s ease, border-color .16s ease;
+    opacity:0;
+    animation: cardIn .45s ease forwards;
   }
-  .card:active{transform:scale(.97);}
+  .card:active{transform:scale(.965);}
+  @keyframes cardIn{ from{opacity:0; transform:translateY(10px) scale(.97);} to{opacity:1; transform:translateY(0) scale(1);} }
+
+  .card.rarity-legendary{
+    border-color: rgba(212,168,67,.4);
+    box-shadow: 0 0 0 1px rgba(212,168,67,.08), 0 10px 24px rgba(212,168,67,.08);
+  }
 
   .card .art{
-    height:96px;
-    border-radius:13px;
+    height:104px;
+    border-radius:14px;
     display:flex;
     align-items:center;
     justify-content:center;
-    margin-bottom:10px;
+    margin-bottom:11px;
+    position:relative;
+    overflow:hidden;
   }
-  .card .art svg{width:58px;height:58px;}
+  .card .art::before{
+    content:'';
+    position:absolute; inset:0;
+    background: radial-gradient(60% 60% at 50% 38%, rgba(255,255,255,.08), transparent 70%);
+  }
+  .card .art svg{width:64px;height:64px; position:relative; z-index:1;
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,.35));}
 
-  .rarity-common .art{background:var(--teal-soft);}
-  .rarity-rare .art{background:var(--violet-soft);}
-  .rarity-epic .art{background:var(--rose-soft);}
-  .rarity-legendary .art{background:var(--gold-soft);}
+  .rarity-common .art{background:linear-gradient(160deg, var(--teal-soft), rgba(79,189,186,.04));}
+  .rarity-rare .art{background:linear-gradient(160deg, var(--violet-soft), rgba(139,127,232,.04));}
+  .rarity-epic .art{background:linear-gradient(160deg, var(--rose-soft), rgba(217,122,140,.04));}
+  .rarity-legendary .art{background:linear-gradient(160deg, var(--gold-soft), rgba(212,168,67,.04));}
 
   .rarity-tag{
     display:inline-flex;
@@ -178,23 +234,24 @@
     margin-bottom:6px;
   }
   .rarity-tag .rdot{width:6px;height:6px;border-radius:50%;}
-  .rarity-common .rdot{background:var(--teal);}
-  .rarity-rare .rdot{background:var(--violet);}
-  .rarity-epic .rdot{background:var(--rose);}
-  .rarity-legendary .rdot{background:var(--gold);}
+  .rarity-common .rdot{background:var(--teal); box-shadow:0 0 6px var(--teal);}
+  .rarity-rare .rdot{background:var(--violet); box-shadow:0 0 6px var(--violet);}
+  .rarity-epic .rdot{background:var(--rose); box-shadow:0 0 6px var(--rose);}
+  .rarity-legendary .rdot{background:var(--gold); box-shadow:0 0 6px var(--gold);}
 
   .card h3{
     font-family:'PT Serif', serif;
     font-size:15px;
-    margin:0 0 3px;
-    line-height:1.2;
+    margin:0 0 4px;
+    line-height:1.25;
+    letter-spacing:-.1px;
   }
   .card .edition{
     font-size:11.5px;
     color:var(--muted);
-    margin-bottom:10px;
+    margin-bottom:11px;
   }
-  .edition b{color:var(--text);}
+  .edition b{color:var(--text); font-weight:700;}
 
   .buy-row{
     display:flex;
@@ -205,76 +262,86 @@
   .price{
     font-size:14.5px;
     font-weight:800;
+    line-height:1.2;
   }
   .price small{
     display:block;
-    font-size:10.5px;
+    font-size:10px;
     font-weight:500;
     color:var(--muted);
   }
   .buy-btn{
     border:none;
-    background:var(--text);
+    background: linear-gradient(180deg, #fbf8ee, var(--text));
     color:#15161f;
-    font-weight:700;
+    font-weight:800;
     font-size:12.5px;
-    padding:8px 14px;
-    border-radius:11px;
+    padding:9px 15px;
+    border-radius:12px;
     cursor:pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,.25);
+    transition:transform .12s ease, box-shadow .12s ease;
   }
+  .buy-btn:active{transform:scale(.94);}
   .buy-btn:disabled{
     background:var(--surface-2);
     color:var(--muted);
     cursor:default;
+    box-shadow:none;
   }
   .buy-btn.owned{
     background:transparent;
     border:1px solid var(--line);
     color:var(--muted);
+    box-shadow:none;
   }
 
   .sold-badge{
     position:absolute;
     top:12px; right:12px;
-    background:rgba(20,21,29,.85);
+    background:rgba(20,21,29,.88);
+    backdrop-filter: blur(4px);
     border:1px solid var(--line);
     font-size:10.5px;
-    padding:4px 8px;
+    padding:4px 9px;
     border-radius:8px;
     color:var(--rose);
     font-weight:700;
+    z-index:2;
   }
 
-  /* Resale list */
-  .resale-item{
+  /* Resale + inventory rows */
+  .resale-item, .inv-item{
     display:flex;
     align-items:center;
     gap:12px;
-    background:var(--surface);
+    background:linear-gradient(165deg, var(--surface) 0%, #1a1c26 100%);
     border:1px solid var(--line);
-    border-radius:16px;
-    padding:10px;
+    border-radius:17px;
+    padding:11px;
     margin-bottom:10px;
+    opacity:0;
+    animation: cardIn .4s ease forwards;
   }
-  .resale-item .art{
-    width:52px;height:52px;border-radius:12px;
+  .resale-item .art, .inv-item .art{
+    width:54px;height:54px;border-radius:13px;
     flex-shrink:0;
     display:flex;align-items:center;justify-content:center;
+    position:relative;
   }
-  .resale-item .art svg{width:30px;height:30px;}
-  .resale-info{flex:1; min-width:0;}
-  .resale-info h4{
+  .resale-item .art svg, .inv-item .art svg{width:32px;height:32px;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,.35));}
+  .resale-info, .inv-info{flex:1; min-width:0;}
+  .resale-info h4, .inv-info h4{
     font-family:'PT Serif', serif;
     margin:0 0 2px;
     font-size:14px;
   }
-  .resale-info .meta{
+  .resale-info .meta, .inv-info .meta{
     font-size:11.5px;
     color:var(--muted);
   }
-  .resale-price{
-    text-align:right;
-  }
+  .resale-price{ text-align:right; }
   .resale-price .now{
     font-size:14.5px;
     font-weight:800;
@@ -288,77 +355,65 @@
 
   .empty-state{
     text-align:center;
-    padding:50px 20px;
+    padding:54px 20px;
     color:var(--muted);
   }
-  .empty-state svg{width:54px;height:54px;margin-bottom:14px;opacity:.7;}
-  .empty-state p{margin:0; font-size:13.5px; line-height:1.5;}
+  .empty-state svg{width:56px;height:56px;margin-bottom:16px;opacity:.55;}
+  .empty-state p{margin:0; font-size:13.5px; line-height:1.55;}
 
-  .inv-item{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:16px;
-    padding:10px;
-    margin-bottom:10px;
-  }
-  .inv-item .art{
-    width:52px;height:52px;border-radius:12px;
-    flex-shrink:0;
-    display:flex;align-items:center;justify-content:center;
-  }
-  .inv-item .art svg{width:30px;height:30px;}
-  .inv-info{flex:1;}
-  .inv-info h4{font-family:'PT Serif', serif; margin:0 0 2px; font-size:14px;}
-  .inv-info .meta{font-size:11.5px; color:var(--muted);}
   .list-btn{
     border:1px solid var(--line);
-    background:transparent;
+    background:var(--surface-2);
     color:var(--text);
     font-size:12px;
     font-weight:700;
-    padding:7px 12px;
-    border-radius:10px;
+    padding:8px 13px;
+    border-radius:11px;
     cursor:pointer;
+    transition:transform .12s ease;
   }
+  .list-btn:active{transform:scale(.94);}
 
   .toast{
     position:fixed;
     left:50%;
-    bottom:28px;
-    transform:translate(-50%, 20px);
+    bottom:30px;
+    transform:translate(-50%, 24px);
     background:#f2efe6;
     color:#15161f;
-    padding:12px 18px;
-    border-radius:13px;
+    padding:13px 20px;
+    border-radius:14px;
     font-size:13.5px;
     font-weight:700;
     opacity:0;
-    transition:opacity .25s, transform .25s;
+    transition:opacity .25s ease, transform .25s ease;
     pointer-events:none;
     z-index:50;
-    box-shadow:0 20px 40px rgba(0,0,0,.35);
+    box-shadow:0 24px 48px rgba(0,0,0,.4);
   }
   .toast.show{opacity:1; transform:translate(-50%, 0);}
 
   .ff-btn{
     display:block;
-    margin:4px auto 0;
+    width:100%;
+    margin:6px 0 0;
     background:none;
     border:1px dashed var(--line);
     color:var(--muted);
-    font-size:11.5px;
-    padding:8px 14px;
-    border-radius:11px;
+    font-size:12px;
+    font-weight:600;
+    padding:11px 14px;
+    border-radius:13px;
     cursor:pointer;
+    transition:border-color .15s ease, color .15s ease;
   }
+  .ff-btn:active{transform:scale(.98);}
 </style>
 </head>
 <body>
 
 <div class="phone">
+  <div class="notch"></div>
   <div class="statusbar"><span>9:41</span><span>••••</span></div>
 
   <div class="app-header">
@@ -382,7 +437,7 @@
     <div class="panel active" id="panel-market">
       <div class="section-row">
         <h2>Свежий дроп</h2>
-        <span>обновление каждый понедельник</span>
+        <span>обновление по понедельникам</span>
       </div>
       <div class="grid" id="marketGrid"></div>
       <button class="ff-btn" id="ffBtn">промотать время вперёд →</button>
@@ -412,14 +467,52 @@
 <div class="toast" id="toast"></div>
 
 <script>
-// ---- illustrations (simple abstract shapes per item, no external assets) ----
+// ---- richer illustrations (layered SVG, gradient defs per instance for unique ids) ----
+let __uid = 0;
 const ART = {
-  sneaker: c => `<svg viewBox="0 0 64 64"><path d="M6 40c4-2 8-4 10-8 3-6 8-9 14-9 3 0 5 1 7 3 4 4 9 5 15 5 4 5 6 9 6 13H6c-2 0-3-1-3-2s1-2 3-2z" fill="${c}"/><path d="M10 38c3-1 6-3 8-6" stroke="#15161f" stroke-width="2" fill="none" opacity=".35"/></svg>`,
-  crown: c => `<svg viewBox="0 0 64 64"><path d="M10 44l4-20 10 10 8-16 8 16 10-10 4 20z" fill="${c}"/><rect x="8" y="44" width="48" height="6" rx="2" fill="${c}"/></svg>`,
-  gem: c => `<svg viewBox="0 0 64 64"><polygon points="32,8 50,24 40,56 24,56 14,24" fill="${c}"/><polygon points="32,8 50,24 32,30 14,24" fill="#ffffff" opacity=".25"/></svg>`,
-  mask: c => `<svg viewBox="0 0 64 64"><ellipse cx="32" cy="34" rx="24" ry="18" fill="${c}"/><circle cx="22" cy="32" r="4" fill="#15161f" opacity=".6"/><circle cx="42" cy="32" r="4" fill="#15161f" opacity=".6"/></svg>`,
-  bolt: c => `<svg viewBox="0 0 64 64"><polygon points="36,4 14,36 28,36 22,60 50,28 34,28" fill="${c}"/></svg>`,
-  medal: c => `<svg viewBox="0 0 64 64"><path d="M20 10l6 14h-12z" fill="${c}" opacity=".7"/><path d="M44 10l-6 14h12z" fill="${c}" opacity=".7"/><circle cx="32" cy="40" r="18" fill="${c}"/><circle cx="32" cy="40" r="10" fill="#15161f" opacity=".2"/></svg>`
+  sneaker: (c, key) => { const id='g'+(++__uid)+key;
+    return `<svg viewBox="0 0 64 64"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="${c}"/><stop offset="1" stop-color="${c}" stop-opacity=".65"/></linearGradient></defs>
+      <path d="M6 42c4-2 7-5 9-9 3-6 8-10 15-10 3 0 5 1 7 3 4 4 9 6 16 6 3 4 5 8 5 12H8c-2 0-3-1-3-1z" fill="url(#${id})"/>
+      <path d="M10 39c4-2 7-5 9-9" stroke="#0e0f16" stroke-width="2" fill="none" opacity=".3" stroke-linecap="round"/>
+      <ellipse cx="24" cy="26" rx="3" ry="3" fill="#fff" opacity=".5"/>
+      <rect x="6" y="42" width="52" height="5" rx="2.5" fill="#0e0f16" opacity=".35"/></svg>`; },
+  crown: (c, key) => { const id='g'+(++__uid)+key;
+    return `<svg viewBox="0 0 64 64"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".3" stop-color="${c}"/><stop offset="1" stop-color="${c}" stop-opacity=".7"/></linearGradient></defs>
+      <path d="M10 44l4-22 10 11 8-17 8 17 10-11 4 22z" fill="url(#${id})"/>
+      <rect x="8" y="44" width="48" height="7" rx="2.5" fill="${c}"/>
+      <circle cx="32" cy="16" r="3.4" fill="#fff" opacity=".7"/>
+      <circle cx="14" cy="24" r="2.4" fill="#fff" opacity=".5"/>
+      <circle cx="50" cy="24" r="2.4" fill="#fff" opacity=".5"/></svg>`; },
+  gem: (c, key) => { const id='g'+(++__uid)+key;
+    return `<svg viewBox="0 0 64 64"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset=".4" stop-color="${c}"/><stop offset="1" stop-color="${c}" stop-opacity=".75"/></linearGradient></defs>
+      <polygon points="32,7 51,23 40,57 24,57 13,23" fill="url(#${id})"/>
+      <polygon points="32,7 51,23 32,29 13,23" fill="#fff" opacity=".3"/>
+      <polygon points="32,29 40,57 24,57" fill="#000" opacity=".12"/>
+      <line x1="32" y1="7" x2="32" y2="29" stroke="#fff" stroke-opacity=".25" stroke-width="1.2"/></svg>`; },
+  mask: (c, key) => { const id='g'+(++__uid)+key;
+    return `<svg viewBox="0 0 64 64"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="${c}"/><stop offset="1" stop-color="${c}" stop-opacity=".7"/></linearGradient></defs>
+      <path d="M8 30c0-14 11-20 24-20s24 6 24 20c0 12-9 20-24 20S8 42 8 30z" fill="url(#${id})"/>
+      <path d="M14 22c6-4 12 2 18 0" stroke="#0e0f16" stroke-width="2" fill="none" opacity=".3" stroke-linecap="round"/>
+      <ellipse cx="23" cy="30" rx="4.5" ry="5.5" fill="#0e0f16" opacity=".55"/>
+      <ellipse cx="41" cy="30" rx="4.5" ry="5.5" fill="#0e0f16" opacity=".55"/>
+      <path d="M28 42c2 2 6 2 8 0" stroke="#0e0f16" stroke-width="2" fill="none" opacity=".4" stroke-linecap="round"/></svg>`; },
+  bolt: (c, key) => { const id='g'+(++__uid)+key;
+    return `<svg viewBox="0 0 64 64"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset="1" stop-color="${c}"/></linearGradient></defs>
+      <polygon points="38,3 15,36 29,36 24,61 51,27 35,27" fill="${c}" opacity=".35"/>
+      <polygon points="36,4 13,34 27,34 22,58 49,25 33,25" fill="url(#${id})"/></svg>`; },
+  medal: (c, key) => { const id='g'+(++__uid)+key;
+    return `<svg viewBox="0 0 64 64"><defs><radialGradient id="${id}" cx="35%" cy="30%" r="70%">
+      <stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="${c}"/></radialGradient></defs>
+      <path d="M20 8l6 16h-13z" fill="${c}" opacity=".55"/>
+      <path d="M44 8l-6 16h13z" fill="${c}" opacity=".55"/>
+      <circle cx="32" cy="40" r="19" fill="url(#${id})"/>
+      <circle cx="32" cy="40" r="19" fill="none" stroke="#0e0f16" stroke-opacity=".18" stroke-width="2"/>
+      <path d="M32 31l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z" fill="#fff" opacity=".55"/></svg>`; }
 };
 
 const COLORS = { common:'#4fbdba', rare:'#8b7fe8', epic:'#d97a8c', legendary:'#d4a843' };
@@ -434,7 +527,7 @@ let items = [
   { id:'medal', name:'Знак старожила', rarity:'epic', art:'medal', total:30, left:1, price:45 }
 ];
 
-let inventory = []; // {itemRef, boughtFor, listed:false, listPrice}
+let inventory = [];
 let resale = [
   { name:'Разряд', art:'bolt', rarity:'rare', mint:22, now:96 },
   { name:'Знак старожила', art:'medal', rarity:'epic', mint:45, now:310 }
@@ -455,13 +548,13 @@ function showToast(msg){
 }
 
 function renderMarket(){
-  marketGrid.innerHTML = items.map(it => {
+  marketGrid.innerHTML = items.map((it, i) => {
     const soldOut = it.left <= 0;
     const owned = inventory.some(x => x.itemId === it.id);
     return `
-    <div class="card rarity-${it.rarity}">
+    <div class="card rarity-${it.rarity}" style="animation-delay:${i*45}ms">
       ${soldOut ? '<div class="sold-badge">раскуплено</div>' : ''}
-      <div class="art">${ART[it.art](COLORS[it.rarity])}</div>
+      <div class="art">${ART[it.art](COLORS[it.rarity], it.id)}</div>
       <div class="rarity-tag"><span class="rdot"></span>${LABELS[it.rarity]}</div>
       <h3>${it.name}</h3>
       <div class="edition">осталось <b>${it.left}</b> из ${it.total}</div>
@@ -493,14 +586,14 @@ function renderInventory(){
   if (inventory.length === 0){
     invList.innerHTML = `
       <div class="empty-state">
-        ${ART.gem('#4a4d5c')}
+        ${ART.gem('#4a4d5c','empty')}
         <p>Пока пусто. Купите что-нибудь на вкладке «Маркет» — сюда попадёт всё, чем вы владеете.</p>
       </div>`;
     return;
   }
   invList.innerHTML = inventory.map((x, idx) => `
-    <div class="inv-item">
-      <div class="art" style="background:${COLORS[x.rarity]}22">${ART[x.art](COLORS[x.rarity])}</div>
+    <div class="inv-item" style="animation-delay:${idx*40}ms">
+      <div class="art" style="background:${COLORS[x.rarity]}22">${ART[x.art](COLORS[x.rarity], x.itemId+idx)}</div>
       <div class="inv-info">
         <h4>${x.name}</h4>
         <div class="meta">куплено за ${x.boughtFor} ⭐ · ${LABELS[x.rarity]}</div>
@@ -522,9 +615,9 @@ function listForSale(idx){
 
 function renderResale(){
   document.getElementById('resaleCount').textContent = resale.length + ' предложений';
-  resaleList.innerHTML = resale.map(r => `
-    <div class="resale-item">
-      <div class="art" style="background:${COLORS[r.rarity]}22">${ART[r.art](COLORS[r.rarity])}</div>
+  resaleList.innerHTML = resale.map((r, idx) => `
+    <div class="resale-item" style="animation-delay:${idx*40}ms">
+      <div class="art" style="background:${COLORS[r.rarity]}22">${ART[r.art](COLORS[r.rarity], 'r'+idx)}</div>
       <div class="resale-info">
         <h4>${r.name}</h4>
         <div class="meta">не в дропе · ${LABELS[r.rarity]}</div>
@@ -537,7 +630,6 @@ function renderResale(){
   `).join('');
 }
 
-// fast-forward simulation: sells out a random low-stock item and bumps resale prices
 document.getElementById('ffBtn').addEventListener('click', () => {
   const candidates = items.filter(i => i.left > 0 && i.left <= 5);
   if (candidates.length){
@@ -553,7 +645,6 @@ document.getElementById('ffBtn').addEventListener('click', () => {
   renderResale();
 });
 
-// tabs
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
