@@ -9,37 +9,34 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
   :root{
-    --ink: #0b0f0d;
-    --panel: #12160f;
-    --panel-2: #171c15;
-    --line: #262b23;
-    --line-soft: rgba(255,255,255,.05);
-    --paper: #eee7d6;
-    --muted: #868c7d;
-    --brass: #b6924f;
-    --brass-soft: rgba(182,146,79,.14);
+    --ink: #030303;
+    --panel: rgba(255,255,255,.035);
+    --panel-strong: rgba(255,255,255,.06);
+    --line: rgba(255,255,255,.09);
+    --paper: #f3efe4;
+    --muted: #83807a;
+    --brass: #c8a15e;
+    --brass-2: #f2e2ba;
+    --brass-soft: rgba(200,161,94,.14);
     --r-common: #6f9a70;
-    --r-rare: #6f87ad;
-    --r-epic: #93708f;
+    --r-rare: #7089b3;
+    --r-epic: #9b76a6;
     --r-legendary: var(--brass);
   }
   *{box-sizing:border-box;}
   html{-webkit-tap-highlight-color:transparent;}
   body{
-    margin:0;
-    min-height:100vh;
-    position:relative;
+    margin:0; min-height:100vh; position:relative;
     background:
-      radial-gradient(620px 380px at 12% -8%, #101a12 0%, transparent 62%),
-      radial-gradient(520px 400px at 100% 0%, #0f140f 0%, transparent 60%),
+      radial-gradient(700px 460px at 10% -12%, #0c0d0a 0%, transparent 60%),
+      radial-gradient(560px 440px at 105% 6%, #0a0a0c 0%, transparent 58%),
       var(--ink);
-    font-family:'Manrope', sans-serif;
-    color:var(--paper);
+    font-family:'Manrope', sans-serif; color:var(--paper);
+    perspective: 1400px;
   }
   body::before{
-    content:'';
-    position:fixed; inset:0; z-index:0; pointer-events:none;
-    opacity:.045; mix-blend-mode:overlay;
+    content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+    opacity:.04; mix-blend-mode:overlay;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
   .app{ position:relative; z-index:1; max-width:560px; margin:0 auto; padding:30px 20px 90px; }
@@ -49,39 +46,27 @@
   .mark{
     width:34px;height:40px; flex-shrink:0; position:relative;
     clip-path: polygon(50% 0%, 100% 32%, 80% 100%, 20% 100%, 0% 32%);
-    background: linear-gradient(160deg, #f1e2bd 0%, var(--brass) 55%, #7d602f 100%);
+    background: linear-gradient(160deg, var(--brass-2) 0%, var(--brass) 55%, #6e5326 100%);
   }
   .mark::before{
     content:''; position:absolute; inset:0;
     clip-path: polygon(50% 0%, 100% 32%, 50% 46%, 0% 32%);
     background:rgba(255,255,255,.28);
   }
-  .brand h1{
-    font-family:'Fraunces', serif; font-optical-sizing:auto;
-    font-size:23px; font-weight:600; margin:0; letter-spacing:-.2px;
-  }
+  .brand h1{ font-family:'Fraunces', serif; font-size:23px; font-weight:600; margin:0; letter-spacing:-.2px; }
   .brand p{ margin:3px 0 0; font-size:12.5px; color:var(--muted); font-style:italic; font-family:'Fraunces', serif; }
 
   /* ---------- tabs ---------- */
   .tabs{ display:flex; gap:24px; border-bottom:1px solid var(--line); margin-bottom:22px; padding:0 1px; }
-  .tab{
-    position:relative; padding:4px 0 13px; font-size:14px; font-weight:700;
-    color:var(--muted); cursor:pointer; user-select:none; transition:color .18s ease;
-  }
-  .tab::after{
-    content:''; position:absolute; left:0; bottom:-1px; width:0; height:2px;
-    background:var(--brass); transition:width .22s cubic-bezier(.4,0,.2,1);
-  }
+  .tab{ position:relative; padding:4px 0 13px; font-size:14px; font-weight:700; color:var(--muted); cursor:pointer; user-select:none; transition:color .18s ease; }
+  .tab::after{ content:''; position:absolute; left:0; bottom:-1px; width:0; height:2px; background:var(--brass); transition:width .22s cubic-bezier(.4,0,.2,1); }
   .tab.active{ color:var(--paper); }
   .tab.active::after{ width:100%; }
 
-  /* ---------- rarity filters ---------- */
+  /* ---------- filters ---------- */
   .filters{ display:flex; gap:20px; overflow-x:auto; margin-bottom:24px; scrollbar-width:none; }
   .filters::-webkit-scrollbar{display:none;}
-  .chip{
-    flex-shrink:0; padding:3px 0 8px; font-size:12.5px; font-weight:600;
-    color:var(--muted); cursor:pointer; border-bottom:2px solid transparent; transition:color .15s ease, border-color .15s ease;
-  }
+  .chip{ flex-shrink:0; padding:3px 0 8px; font-size:12.5px; font-weight:600; color:var(--muted); cursor:pointer; border-bottom:2px solid transparent; transition:color .15s ease, border-color .15s ease; }
   .chip.active{ color:var(--paper); }
   .chip[data-r="all"].active{ border-color:var(--paper); }
   .chip[data-r="common"].active{ border-color:var(--r-common); }
@@ -96,34 +81,54 @@
   .section-row h2{ font-family:'Fraunces', serif; font-size:19px; font-weight:600; margin:0; }
   .section-row span{ font-size:12px; color:var(--muted); }
 
-  /* ---------- lots (catalog entries) ---------- */
-  .lots{ display:flex; flex-direction:column; gap:1px; }
+  /* ---------- lots ---------- */
+  .lots{ display:flex; flex-direction:column; gap:14px; }
   .lot{
-    background:var(--panel);
+    background: linear-gradient(160deg, var(--panel-strong), var(--panel));
     border:1px solid var(--line);
-    border-top:none;
+    border-radius:18px;
     padding:20px 18px;
     position:relative;
-    opacity:0; animation: lotIn .4s ease forwards;
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    box-shadow: 0 20px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
+    opacity:0; transform-style:preserve-3d; will-change:transform;
+    animation: lotIn .5s cubic-bezier(.2,.8,.2,1) forwards;
+    transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease;
   }
-  .lots .lot:first-child{ border-top:1px solid var(--line); border-radius:10px 10px 0 0; }
-  .lots .lot:last-child{ border-radius:0 0 10px 10px; }
-  .lots .lot:only-child{ border-radius:10px; }
-  @keyframes lotIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+  @keyframes lotIn{ from{opacity:0; transform:translateY(14px) rotateX(-8deg);} to{opacity:1; transform:translateY(0) rotateX(0);} }
+  .lot.tilting{ box-shadow: 0 28px 56px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.07); }
 
   .lot-head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:10px; }
   .lot-no{ font-family:'Space Mono', monospace; font-size:11.5px; color:var(--muted); letter-spacing:.02em; }
   .lot-stock{ font-size:11.5px; color:var(--muted); }
-  .lot.is-sold .lot-stock{ color:#a8756f; }
+  .lot.is-sold .lot-stock{ color:#b47e77; }
+
+  /* glass photo frame — for lots that carry an image */
+  .glass-frame{
+    width:100%; aspect-ratio:1/1; border-radius:16px; overflow:hidden;
+    position:relative; margin-bottom:16px;
+    background: rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow: 0 24px 48px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.1);
+    transform-style:preserve-3d; will-change:transform;
+    transition: transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s ease;
+  }
+  .glass-frame img{ width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(.1) contrast(1.05); }
+  .glass-frame::after{
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background:linear-gradient(135deg, rgba(255,255,255,.22), transparent 45%);
+  }
+  .glass-frame:active{ transform:scale(.95) rotateX(3deg) !important; }
 
   .lot h3{ font-family:'Fraunces', serif; font-weight:600; font-size:18.5px; margin:0 0 10px; letter-spacing:-.1px; }
 
   .rarity-rule{ height:2px; background:var(--r-common); margin-bottom:14px; width:22px; }
-  .lot.rarity-rare .rarity-rule{ background:var(--r-rare); width:38px; height:2px; }
+  .lot.rarity-rare .rarity-rule{ background:var(--r-rare); width:38px; }
   .lot.rarity-epic .rarity-rule{ background:var(--r-epic); width:56px; height:3px; }
-  .lot.rarity-legendary .rarity-rule{ background:linear-gradient(90deg, var(--brass), #f1e2bd); width:84px; height:3px; }
+  .lot.rarity-legendary .rarity-rule{ background:linear-gradient(90deg, var(--brass), var(--brass-2)); width:84px; height:3px; }
 
-  .lot-desc{ font-size:13.5px; line-height:1.6; color:#c9c3b4; margin:0 0 18px; max-width:46ch; }
+  .lot-desc{ font-size:13.5px; line-height:1.6; color:#cbc6b8; margin:0 0 18px; max-width:46ch; }
 
   .lot-foot{ display:flex; justify-content:space-between; align-items:flex-end; gap:12px; }
   .rarity-label{ font-size:12px; font-style:italic; font-family:'Fraunces', serif; color:var(--muted); }
@@ -133,38 +138,34 @@
   .price .asset{ color:var(--muted); font-size:11.5px; margin-left:3px; }
 
   .buy-btn{
-    border:1px solid var(--brass);
-    background:transparent;
-    color:var(--paper);
-    font-weight:700; font-size:12.5px;
-    padding:9px 16px; border-radius:8px; cursor:pointer;
-    transition:background .15s ease, transform .12s ease;
+    border:1px solid var(--brass); background:transparent; color:var(--paper);
+    font-weight:700; font-size:12.5px; padding:9px 16px; border-radius:9px; cursor:pointer;
+    transition:background .15s ease, transform .15s cubic-bezier(.2,.8,.2,1), box-shadow .15s ease;
     white-space:nowrap;
   }
-  .buy-btn:hover:not(:disabled){ background:var(--brass-soft); }
-  .buy-btn:active:not(:disabled){ transform:scale(.95); }
+  .buy-btn:hover:not(:disabled){ background:var(--brass-soft); box-shadow:0 6px 16px rgba(200,161,94,.18); }
+  .buy-btn:active:not(:disabled){ transform:scale(.92); }
   .buy-btn:disabled{ border-color:var(--line); color:var(--muted); cursor:default; }
   .buy-btn.owned{ border-style:dashed; }
 
   /* ---------- inventory ---------- */
-  .owned-list{ display:flex; flex-direction:column; gap:1px; }
+  .owned-list{ display:flex; flex-direction:column; gap:12px; }
   .owned-item{
-    background:var(--panel); border:1px solid var(--line); border-top:none;
-    padding:16px 18px; opacity:0; animation: lotIn .35s ease forwards;
+    background: linear-gradient(160deg, var(--panel-strong), var(--panel));
+    border:1px solid var(--line); border-radius:16px; padding:16px 18px;
+    backdrop-filter: blur(10px);
+    opacity:0; animation: lotIn .4s ease forwards;
   }
-  .owned-list .owned-item:first-child{ border-top:1px solid var(--line); border-radius:10px 10px 0 0; }
-  .owned-list .owned-item:last-child{ border-radius:0 0 10px 10px; }
   .owned-head{ display:flex; justify-content:space-between; font-size:11.5px; color:var(--muted); margin-bottom:6px; font-family:'Space Mono', monospace; }
   .owned-item h4{ font-family:'Fraunces', serif; font-weight:600; font-size:16px; margin:0 0 5px; }
 
-  /* ---------- empty state ---------- */
   .empty-state{ text-align:center; padding:60px 20px; color:var(--muted); }
   .empty-state .orn{ font-size:13px; letter-spacing:.3em; color:var(--brass); margin-bottom:16px; }
-  .empty-state p{ margin:0; font-size:14px; line-height:1.6; max-width:32ch; margin:0 auto; }
+  .empty-state p{ margin:0 auto; font-size:14px; line-height:1.6; max-width:32ch; }
 
   .toast{
     position:fixed; left:50%; bottom:26px; transform:translate(-50%, 24px);
-    background:var(--paper); color:#12160f; padding:13px 20px; border-radius:10px;
+    background:var(--paper); color:#12160f; padding:13px 20px; border-radius:11px;
     font-size:13.5px; font-weight:700; opacity:0;
     transition:opacity .25s ease, transform .25s ease; pointer-events:none; z-index:50;
     box-shadow:0 20px 40px rgba(0,0,0,.5); max-width:90vw;
@@ -206,18 +207,12 @@
   </div>
 
   <div class="panel" id="panel-resale">
-    <div class="section-row">
-      <h2>Перепродажа</h2>
-      <span id="resaleCount"></span>
-    </div>
+    <div class="section-row"><h2>Перепродажа</h2><span id="resaleCount"></span></div>
     <div id="resaleList"></div>
   </div>
 
   <div class="panel" id="panel-inventory">
-    <div class="section-row">
-      <h2>Моя коллекция</h2>
-      <span></span>
-    </div>
+    <div class="section-row"><h2>Моя коллекция</h2><span></span></div>
     <div id="invList"></div>
   </div>
 
@@ -228,13 +223,12 @@
 <script>
 const LABELS = { common:'обычная', rare:'редкая', epic:'эпическая', legendary:'легендарная' };
 
-// ---------- Telegram Mini App: подключение к боту ----------
 const tg = window.Telegram ? window.Telegram.WebApp : null;
 if (tg) { tg.ready(); tg.expand(); }
 const initData = tg ? tg.initData : '';
 
-let items = [];      // придёт с /api/catalog
-let inventory = [];  // придёт с /api/inventory
+let items = [];
+let inventory = [];
 let activeFilter = 'all';
 let pendingInvoiceId = null;
 let pollTimer = null;
@@ -244,9 +238,6 @@ const resaleList = document.getElementById('resaleList');
 const invList = document.getElementById('invList');
 const toast = document.getElementById('toast');
 
-// Раздел "вторичный рынок" в этой версии остаётся демо-заглушкой —
-// перепродажа между пользователями требует отдельной логики на сервере,
-// сюда не подключена намеренно.
 document.getElementById('resaleCount').textContent = '0 предложений';
 resaleList.innerHTML = '<div class="empty-state"><div class="orn">· · ·</div><p>Раздел перепродажи пока не подключён.</p></div>';
 
@@ -279,6 +270,22 @@ async function loadInventory(){
   renderInventory();
 }
 
+// лёгкий 3D-наклон карточки под курсором/пальцем
+function attachTilt(el, strength){
+  const s = strength || 8;
+  const onMove = (e) => {
+    const r = el.getBoundingClientRect();
+    const px = ((e.clientX ?? (e.touches && e.touches[0].clientX)) - r.left) / r.width - .5;
+    const py = ((e.clientY ?? (e.touches && e.touches[0].clientY)) - r.top) / r.height - .5;
+    el.style.transform = `rotateY(${px*s}deg) rotateX(${-py*s}deg)`;
+    el.classList.add('tilting');
+  };
+  const onLeave = () => { el.style.transform = ''; el.classList.remove('tilting'); };
+  el.addEventListener('pointermove', onMove);
+  el.addEventListener('pointerleave', onLeave);
+  el.addEventListener('pointerup', onLeave);
+}
+
 function renderMarket(){
   const visible = items.filter(it => activeFilter === 'all' || it.rarity === activeFilter);
   document.getElementById('lotCount').textContent = visible.length + (visible.length === 1 ? ' лот' : ' лотов');
@@ -286,11 +293,12 @@ function renderMarket(){
     const soldOut = it.left <= 0;
     const owned = inventory.some(x => x.itemId === it.id);
     return `
-    <article class="lot rarity-${it.rarity} ${soldOut?'is-sold':''}" style="animation-delay:${i*35}ms">
+    <article class="lot rarity-${it.rarity} ${soldOut?'is-sold':''}" style="animation-delay:${i*40}ms" data-id="${it.id}">
       <div class="lot-head">
         <span class="lot-no">Лот ${String(i+1).padStart(2,'0')}</span>
         <span class="lot-stock">${soldOut ? 'раскуплено' : 'осталось ' + it.left}</span>
       </div>
+      ${it.image ? `<div class="glass-frame" data-tilt><img src="${it.image}" alt="${it.name}" loading="lazy"></div>` : ''}
       <h3>${it.name}</h3>
       <div class="rarity-rule"></div>
       <p class="lot-desc">${it.description || ''}</p>
@@ -305,12 +313,12 @@ function renderMarket(){
       </div>
     </article>`;
   }).join('');
+
+  // навешиваем 3D-тилт: сильный на стеклянные фото-рамки, лёгкий на карточки лотов
+  marketGrid.querySelectorAll('[data-tilt]').forEach(el => attachTilt(el, 16));
+  marketGrid.querySelectorAll('.lot').forEach(el => attachTilt(el, 5));
 }
 
-// Покупка идёт в три шага:
-// 1) просим у сервера счёт (сервер сам обращается к CryptoBot),
-// 2) открываем ссылку на оплату внутри Telegram,
-// 3) опрашиваем сервер, пока счёт не станет "paid".
 async function buy(id){
   if (!initData) { showToast('Открой витрину через кнопку в боте'); return; }
   if (pendingInvoiceId) { showToast('Дождитесь предыдущей оплаты'); return; }
@@ -354,13 +362,11 @@ function pollInvoice(invoiceId){
         clearInterval(pollTimer);
         pendingInvoiceId = null;
         showToast('Оплата пришла, но товар закончился — свяжитесь с поддержкой');
-      } else if (attempts > 60) { // ~5 минут при опросе раз в 5 секунд
+      } else if (attempts > 60) {
         clearInterval(pollTimer);
         pendingInvoiceId = null;
       }
-    } catch (err) {
-      // сеть моргнула — просто попробуем на следующем тике
-    }
+    } catch (err) {}
   }, 5000);
 }
 
@@ -370,11 +376,7 @@ function fmtDate(ts){
 
 function renderInventory(){
   if (inventory.length === 0){
-    invList.innerHTML = `
-      <div class="empty-state">
-        <div class="orn">· · ·</div>
-        <p>Пока пусто. Купите что-нибудь на вкладке «Лоты» — сюда попадёт всё, чем вы владеете.</p>
-      </div>`;
+    invList.innerHTML = `<div class="empty-state"><div class="orn">· · ·</div><p>Пока пусто. Купите что-нибудь на вкладке «Лоты» — сюда попадёт всё, чем вы владеете.</p></div>`;
     return;
   }
   invList.innerHTML = `<div class="owned-list">` + inventory.map((x, idx) => {
