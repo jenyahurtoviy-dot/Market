@@ -18,18 +18,20 @@
     --surface: rgba(255,255,255,.032);
     --surface-hi: rgba(255,255,255,.062);
 
-    --c-common:#8b909b;
-    --c-rare:#48c3dd;
-    --c-epic:#b57bff;
-    --c-legendary:#ffb648;
+    --c-common:#9aa0ab;
+    --c-rare:#3fd0e8;
+    --c-epic:#c383ff;
+    --c-legendary:#ffc35c;
   }
   *{box-sizing:border-box;}
   html{-webkit-tap-highlight-color:transparent;}
   body{
     margin:0; min-height:100vh; position:relative;
     background:
+      radial-gradient(38% 26% at 12% 4%, rgba(63,208,232,.10), transparent 70%),
+      radial-gradient(34% 24% at 92% 10%, rgba(195,131,255,.10), transparent 70%),
+      radial-gradient(30% 22% at 70% 92%, rgba(255,195,92,.07), transparent 70%),
       radial-gradient(120% 90% at 50% 120%, rgba(0,0,0,.85), transparent 60%),
-      radial-gradient(60% 40% at 15% -10%, rgba(255,255,255,.035), transparent 60%),
       var(--bg);
     font-family:'Manrope', sans-serif; color:var(--paper);
   }
@@ -38,23 +40,7 @@
     opacity:.045; mix-blend-mode:overlay;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
-  .app{ position:relative; z-index:1; max-width:640px; margin:0 auto; padding:28px 16px 90px; }
-
-  /* ---------- header ---------- */
-  .top{ display:flex; align-items:center; gap:14px; margin-bottom:22px; }
-  .mark{
-    width:30px;height:35px; flex-shrink:0; position:relative;
-    clip-path: polygon(50% 0%, 100% 30%, 82% 100%, 18% 100%, 0% 30%);
-    background: linear-gradient(160deg, #f2f2ee 0%, #9c9c96 45%, #1c1c1a 100%);
-    box-shadow: 0 6px 18px rgba(0,0,0,.5);
-  }
-  .mark::before{
-    content:''; position:absolute; inset:0;
-    clip-path: polygon(50% 0%, 100% 30%, 50% 44%, 0% 30%);
-    background:rgba(255,255,255,.3);
-  }
-  .brand h1{ font-family:'Fraunces', serif; font-size:22px; font-weight:560; margin:0; letter-spacing:-.2px; }
-  .brand p{ margin:3px 0 0; font-size:12px; color:var(--muted); font-style:italic; font-family:'Fraunces', serif; }
+  .app{ position:relative; z-index:1; max-width:640px; margin:0 auto; padding:22px 16px 90px; }
 
   /* ---------- search ---------- */
   .search{
@@ -162,34 +148,51 @@
   }
   .tile.tilting::after{ opacity:.28; }
   .tile.tilting{ border-color: color-mix(in srgb, var(--rc) 45%, rgba(255,255,255,.15)); }
+  .tile:hover{ transform:translateY(-3px); }
 
-  .tile[data-rarity="rare"]{ box-shadow: 0 14px 30px rgba(0,0,0,.5), 0 0 0 1px rgba(72,195,221,.05) inset; }
-  .tile[data-rarity="epic"]{ box-shadow: 0 14px 30px rgba(0,0,0,.5), inset 0 0 22px rgba(181,123,255,.06); }
-  .tile[data-rarity="legendary"]{ border-color: rgba(255,182,72,.28); animation: tileIn .5s cubic-bezier(.2,.8,.2,1) forwards, legendaryGlow 3.2s ease-in-out .5s infinite; }
+  .tile[data-rarity="common"]{ box-shadow: 0 14px 30px rgba(0,0,0,.5); }
+  .tile[data-rarity="rare"]{ border-color: rgba(63,208,232,.22); animation: tileIn .5s cubic-bezier(.2,.8,.2,1) forwards, rareGlow 3.6s ease-in-out .3s infinite; }
+  .tile[data-rarity="epic"]{ border-color: rgba(195,131,255,.26); animation: tileIn .5s cubic-bezier(.2,.8,.2,1) forwards, epicGlow 3s ease-in-out .3s infinite; }
+  .tile[data-rarity="legendary"]{ border-color: rgba(255,195,92,.32); animation: tileIn .5s cubic-bezier(.2,.8,.2,1) forwards, legendaryGlow 2.6s ease-in-out .3s infinite; }
+  @keyframes rareGlow{
+    0%,100%{ box-shadow: 0 14px 30px rgba(0,0,0,.5), 0 0 0 rgba(63,208,232,0); }
+    50%{ box-shadow: 0 16px 32px rgba(0,0,0,.5), 0 0 16px rgba(63,208,232,.22); }
+  }
+  @keyframes epicGlow{
+    0%,100%{ box-shadow: 0 14px 30px rgba(0,0,0,.5), 0 0 0 rgba(195,131,255,0); }
+    50%{ box-shadow: 0 16px 34px rgba(0,0,0,.5), 0 0 20px rgba(195,131,255,.28); }
+  }
   @keyframes legendaryGlow{
-    0%,100%{ box-shadow: 0 14px 30px rgba(0,0,0,.5), 0 0 0 rgba(255,182,72,0); }
-    50%{ box-shadow: 0 14px 34px rgba(0,0,0,.55), 0 0 22px rgba(255,182,72,.30); }
+    0%,100%{ box-shadow: 0 14px 30px rgba(0,0,0,.5), 0 0 0 rgba(255,195,92,0); }
+    50%{ box-shadow: 0 18px 38px rgba(0,0,0,.55), 0 0 28px rgba(255,195,92,.42); }
   }
 
   .tile-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; position:relative; z-index:1; }
-  .rarity-dot{ width:16px;height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-    background: radial-gradient(circle at 34% 28%, color-mix(in srgb, var(--rc) 70%, white), color-mix(in srgb, var(--rc) 55%, black) 75%);
-    box-shadow: 0 0 7px color-mix(in srgb, var(--rc) 60%, transparent); }
+  .rarity-dot{ width:16px;height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center; position:relative;
+    background: radial-gradient(circle at 34% 28%, color-mix(in srgb, var(--rc) 75%, white), color-mix(in srgb, var(--rc) 55%, black) 75%);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--rc) 70%, transparent); }
   .rarity-dot svg{ width:8px;height:8px; color:#0a0a0a; }
+  .tile[data-rarity="epic"] .rarity-dot, .tile[data-rarity="legendary"] .rarity-dot{ animation: dotPulse 1.8s ease-in-out infinite; }
+  @keyframes dotPulse{ 0%,100%{ box-shadow:0 0 8px color-mix(in srgb, var(--rc) 70%, transparent); } 50%{ box-shadow:0 0 15px color-mix(in srgb, var(--rc) 95%, transparent); } }
   .tile-stock{ font-size:9.5px; font-family:'Space Mono',monospace; color:var(--muted-dim); }
   .tile.is-sold .tile-stock{ color:#a37974; }
 
+  /* ---------- sparkles (legendary only) ---------- */
+  .spark{ position:absolute; z-index:3; pointer-events:none; color:#fff8e0; opacity:0; animation:sparkTwinkle 2.4s ease-in-out infinite; filter:drop-shadow(0 0 4px rgba(255,195,92,.8)); }
+  @keyframes sparkTwinkle{ 0%,100%{opacity:0; transform:scale(.4) rotate(0deg);} 50%{opacity:1; transform:scale(1) rotate(45deg);} }
+
   /* ---------- glass capsule ---------- */
   .capsule{
-    width:70%; aspect-ratio:1/1; margin:2px auto 10px; position:relative; z-index:1;
+    width:72%; aspect-ratio:1/1; margin:2px auto 10px; position:relative; z-index:1;
     border-radius:50%;
     background:
-      radial-gradient(circle at 32% 26%, rgba(255,255,255,.55), rgba(255,255,255,.05) 42%, rgba(0,0,0,.35) 100%),
-      radial-gradient(120% 120% at 50% 60%, color-mix(in srgb, var(--rc) 22%, transparent), transparent 70%);
-    border:1px solid rgba(255,255,255,.22);
+      radial-gradient(circle at 32% 24%, rgba(255,255,255,.65), rgba(255,255,255,.06) 40%, rgba(0,0,0,.4) 100%),
+      radial-gradient(120% 120% at 50% 60%, color-mix(in srgb, var(--rc) 30%, transparent), transparent 72%);
+    border:1.5px solid color-mix(in srgb, var(--rc) 38%, rgba(255,255,255,.25));
     box-shadow:
-      inset 0 -12px 18px rgba(0,0,0,.5),
-      inset 0 5px 10px rgba(255,255,255,.16),
+      inset 0 -14px 20px rgba(0,0,0,.5),
+      inset 0 6px 12px rgba(255,255,255,.2),
+      0 4px 14px color-mix(in srgb, var(--rc) 25%, transparent),
       0 10px 20px rgba(0,0,0,.5);
     overflow:hidden;
     transition: transform .35s cubic-bezier(.2,.8,.2,1);
@@ -200,7 +203,12 @@
 
   .capsule::before{
     content:''; position:absolute; inset:0; z-index:2; pointer-events:none; border-radius:inherit;
-    background: linear-gradient(120deg, transparent 32%, rgba(255,255,255,.20) 46%, transparent 60%);
+    background: linear-gradient(120deg, transparent 32%, rgba(255,255,255,.24) 46%, transparent 60%);
+  }
+  .capsule .arc{
+    position:absolute; top:6%; left:14%; width:34%; height:16%; z-index:2; pointer-events:none;
+    border-radius:50%; background:rgba(255,255,255,.55); filter:blur(1.5px);
+    transform:rotate(-18deg);
   }
   .capsule .glint{
     position:absolute; top:-40%; left:-55%; width:30%; height:180%; z-index:2; pointer-events:none;
@@ -234,18 +242,21 @@
   .tile-foot{ display:flex; align-items:center; justify-content:center; gap:6px; position:relative; z-index:1; }
   .price-pill{
     flex:1; display:flex; align-items:center; justify-content:center; gap:4px;
-    background: linear-gradient(180deg,#1a1a1a,#0a0a0a); border:1px solid rgba(255,255,255,.1);
+    background: linear-gradient(180deg,#1c1c1c,#0a0a0a);
+    border:1px solid color-mix(in srgb, var(--rc) 35%, rgba(255,255,255,.1));
     border-radius:11px; padding:8px 4px; font-size:12px; font-weight:800; color:var(--paper);
     box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
   }
   .price-pill .cur{ font-size:9px; color:var(--muted); font-weight:600; }
   .cart-btn{
-    width:32px;height:32px; flex-shrink:0; border-radius:10px; border:1px solid rgba(255,255,255,.1);
-    background: linear-gradient(180deg,#1a1a1a,#0a0a0a); display:flex; align-items:center; justify-content:center;
+    width:32px;height:32px; flex-shrink:0; border-radius:10px;
+    border:1px solid color-mix(in srgb, var(--rc) 35%, rgba(255,255,255,.1));
+    background: linear-gradient(180deg,#1c1c1c,#0a0a0a); display:flex; align-items:center; justify-content:center;
     cursor:pointer; color:var(--paper); box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
-    transition: transform .16s ease, background .2s ease;
+    transition: transform .16s ease, background .2s ease, box-shadow .2s ease;
   }
   .cart-btn svg{ width:13px;height:13px; }
+  .cart-btn:hover:not(:disabled){ box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 0 12px color-mix(in srgb, var(--rc) 55%, transparent); }
   .cart-btn:active{ transform:scale(.9); }
   .cart-btn:disabled{ opacity:.35; cursor:default; }
   .tile.is-sold .price-pill{ color:var(--muted-dim); }
@@ -275,14 +286,6 @@
 <body>
 
 <div class="app">
-
-  <div class="top">
-    <div class="mark"></div>
-    <div class="brand">
-      <h1>Каталог</h1>
-      <p>закрытая коллекция лимитированных подарков</p>
-    </div>
-  </div>
 
   <div class="tabs" id="tabs">
     <div class="tab-indicator" id="tabIndicator"></div>
@@ -337,6 +340,18 @@ const GLYPHS = [
   `<svg class="glyph" viewBox="0 0 64 64"><path d="M32 6 L58 20 L58 44 L32 58 L6 44 L6 20 Z" fill="url(#g4)"/><defs><linearGradient id="g4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--rc)"/><stop offset="1" stop-color="#fff"/></linearGradient></defs></svg>`,
   `<svg class="glyph" viewBox="0 0 64 64"><circle cx="32" cy="32" r="22" fill="none" stroke="url(#g5)" stroke-width="7"/><circle cx="32" cy="32" r="7" fill="url(#g5)"/><defs><linearGradient id="g5" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--rc)"/><stop offset="1" stop-color="#fff"/></linearGradient></defs></svg>`
 ];
+const STAR = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8Z"/></svg>';
+const SPARK_POS = [
+  { top:'6%', left:'10%', size:12, delay:0 },
+  { top:'14%', right:'12%', size:9, delay:.6 },
+  { top:'54%', right:'4%', size:10, delay:1.2 },
+];
+function sparkles(i){
+  return SPARK_POS.map((p, k) => {
+    const pos = p.left ? `left:${p.left};` : `right:${p.right};`;
+    return `<span class="spark" style="top:${p.top}; ${pos} width:${p.size}px; height:${p.size}px; animation-delay:${p.delay + (i%3)*.4}s">${STAR}</span>`;
+  }).join('');
+}
 function glyphFor(id){
   let h = 0; const s = String(id);
   for (let i=0;i<s.length;i++) h = (h*31 + s.charCodeAt(i)) >>> 0;
@@ -451,9 +466,11 @@ function tileHTML(it, i, ownedList){
       </div>
       <div class="capsule" data-tilt>
         ${it.image ? `<img src="${it.image}" alt="${it.name}" loading="lazy">` : glyphFor(it.id)}
+        <span class="arc"></span>
         <span class="glint" style="animation-delay:${(i%4)*1.1}s"></span>
         <span class="holo"></span>
       </div>
+      ${it.rarity === 'legendary' ? sparkles(i) : ''}
       <h3 title="${it.name}">${it.name}</h3>
       <span class="tile-id">#${it.id}</span>
       <div class="tile-foot">
