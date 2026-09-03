@@ -1,14 +1,16 @@
 const ITEMS = [
-  { id: 'sneak', name: 'Кроссы «Полночь»', rarity: 'common', art: 'sneaker', price: 9 },
-  { id: 'gem',   name: 'Осколок звезды',    rarity: 'rare',   art: 'gem',     price: 19 },
-  { id: 'bolt',  name: 'Разряд',            rarity: 'rare',   art: 'bolt',    price: 22 },
-  { id: 'mask',  name: 'Маска карнавала',   rarity: 'epic',   art: 'mask',    price: 38 },
-  { id: 'medal', name: 'Знак старожила',    rarity: 'epic',   art: 'medal',   price: 45 },
-  { id: 'crown', name: 'Корона основателя', rarity: 'legendary', art: 'crown', price: 75 },
-
-  // тестовые позиции — убрать перед реальным запуском
-  { id: 'test1', name: 'Тест: копейка',   rarity: 'common', art: 'sneaker', price: 1 },
-  { id: 'test2', name: 'Тест: две копейки', rarity: 'common', art: 'gem',    price: 2 }
+  { id: 'sneak', name: 'Кроссы «Полночь»', rarity: 'common', price: 9,
+    description: 'Городская пара для тех, кто не расстаётся с улицей даже ночью.' },
+  { id: 'gem',   name: 'Осколок звезды', rarity: 'rare', price: 19,
+    description: 'Кусочек метеорита, застывший в момент падения — редкая находка коллекционеров.' },
+  { id: 'bolt',  name: 'Разряд', rarity: 'rare', price: 22,
+    description: 'Заряд чистой энергии, зафиксированный в момент вспышки.' },
+  { id: 'mask',  name: 'Маска карнавала', rarity: 'epic', price: 38,
+    description: 'Ручная роспись в традициях венецианского карнавала — двух одинаковых масок не бывает.' },
+  { id: 'medal', name: 'Знак старожила', rarity: 'epic', price: 45,
+    description: 'Вручается тем, кто был здесь с самого начала. Тираж строго ограничен.' },
+  { id: 'crown', name: 'Корона основателя', rarity: 'legendary', price: 75,
+    description: 'Символ первых. Больше выпускаться не будет.' }
 ];
 
 function getItem(id) {
