@@ -9,33 +9,23 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
   :root{
-    --bg: #060504;
-    --vault: #0b0906;
-    --surface: rgba(255,255,255,.035);
-    --surface-hi: rgba(255,255,255,.065);
-    --line: rgba(214,180,120,.16);
-    --line-soft: rgba(255,255,255,.07);
-    --paper: #ece5d4;
-    --muted: #8c8477;
-    --muted-dim: #5c574d;
-
-    --gold: #cea365;
-    --gold-hi: #f6e3ba;
-    --gold-deep: #6e5023;
-
-    --r-common: #6f9878;
-    --r-rare: #6f8fbd;
-    --r-epic: #a077b3;
-    --r-legendary: var(--gold);
+    --bg: #020202;
+    --vault: #0a0a0a;
+    --surface: rgba(255,255,255,.032);
+    --surface-hi: rgba(255,255,255,.062);
+    --line: rgba(255,255,255,.10);
+    --line-soft: rgba(255,255,255,.06);
+    --paper: #f1f0ec;
+    --muted: #8d8d89;
+    --muted-dim: #55534f;
   }
   *{box-sizing:border-box;}
   html{-webkit-tap-highlight-color:transparent;}
   body{
     margin:0; min-height:100vh; position:relative;
     background:
-      radial-gradient(60% 46% at 18% -8%, rgba(90,68,28,.16), transparent 60%),
-      radial-gradient(55% 40% at 108% 10%, rgba(60,50,70,.12), transparent 60%),
-      radial-gradient(120% 90% at 50% 120%, rgba(0,0,0,.7), transparent 60%),
+      radial-gradient(120% 90% at 50% 120%, rgba(0,0,0,.85), transparent 60%),
+      radial-gradient(60% 40% at 15% -10%, rgba(255,255,255,.035), transparent 60%),
       var(--bg);
     font-family:'Manrope', sans-serif; color:var(--paper);
   }
@@ -51,38 +41,58 @@
   .mark{
     width:32px;height:38px; flex-shrink:0; position:relative;
     clip-path: polygon(50% 0%, 100% 30%, 82% 100%, 18% 100%, 0% 30%);
-    background: linear-gradient(160deg, var(--gold-hi) 0%, var(--gold) 48%, var(--gold-deep) 100%);
-    box-shadow: 0 6px 18px rgba(206,163,101,.25);
+    background: linear-gradient(160deg, #f2f2ee 0%, #9c9c96 45%, #1c1c1a 100%);
+    box-shadow: 0 6px 18px rgba(0,0,0,.5);
   }
   .mark::before{
     content:''; position:absolute; inset:0;
     clip-path: polygon(50% 0%, 100% 30%, 50% 44%, 0% 30%);
-    background:rgba(255,255,255,.32);
+    background:rgba(255,255,255,.3);
   }
   .brand h1{ font-family:'Fraunces', serif; font-size:24px; font-weight:560; margin:0; letter-spacing:-.2px; }
   .brand p{ margin:4px 0 0; font-size:12.5px; color:var(--muted); font-style:italic; font-family:'Fraunces', serif; }
 
-  /* ---------- tabs ---------- */
-  .tabs{ display:flex; gap:26px; border-bottom:1px solid var(--line-soft); margin-bottom:24px; padding:0 1px; }
-  .tab{ position:relative; padding:4px 0 14px; font-size:14px; font-weight:700; color:var(--muted); cursor:pointer; user-select:none; transition:color .2s ease; }
-  .tab::after{ content:''; position:absolute; left:0; bottom:-1px; width:0; height:2px; background:linear-gradient(90deg,var(--gold),var(--gold-hi)); transition:width .25s cubic-bezier(.4,0,.2,1); }
-  .tab.active{ color:var(--paper); }
-  .tab.active::after{ width:100%; }
+  /* ---------- tabs: segmented pill switcher ---------- */
+  .tabs{
+    position:relative; display:flex; gap:2px;
+    background: linear-gradient(180deg,#0e0e0e,#040404);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:16px; padding:4px; margin-bottom:26px;
+    box-shadow: inset 0 2px 7px rgba(0,0,0,.7), inset 0 -1px 0 rgba(255,255,255,.03);
+  }
+  .tab-indicator{
+    position:absolute; top:4px; bottom:4px; left:4px; width:0;
+    border-radius:12px;
+    background: linear-gradient(160deg,#fdfdfb,#c7c7c0);
+    box-shadow: 0 6px 16px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.9);
+    transition: transform .4s cubic-bezier(.22,.9,.24,1), width .4s cubic-bezier(.22,.9,.24,1);
+    z-index:1;
+  }
+  .tab{
+    position:relative; z-index:2; flex:1; text-align:center;
+    padding:11px 6px; font-size:12.5px; font-weight:700; color:var(--muted);
+    border-radius:12px; cursor:pointer; user-select:none;
+    transition: color .3s ease;
+  }
+  .tab.active{ color:#0a0a0a; }
 
-  /* ---------- filters ---------- */
-  .filters{ display:flex; gap:10px; overflow-x:auto; margin-bottom:26px; scrollbar-width:none; }
+  /* ---------- filters: keycap toggle chips ---------- */
+  .filters{ display:flex; gap:8px; overflow-x:auto; margin-bottom:26px; scrollbar-width:none; padding:2px 1px; }
   .filters::-webkit-scrollbar{display:none;}
   .chip{
-    flex-shrink:0; padding:7px 14px; font-size:12.5px; font-weight:600; color:var(--muted);
-    cursor:pointer; border:1px solid var(--line-soft); border-radius:20px; transition:all .18s ease;
-    background:rgba(255,255,255,.015);
+    flex-shrink:0; padding:8px 15px; font-size:12.5px; font-weight:700; color:var(--muted);
+    cursor:pointer; border-radius:11px; user-select:none;
+    background: linear-gradient(180deg,#121212,#060606);
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 3px 8px rgba(0,0,0,.45);
+    transition: transform .16s cubic-bezier(.2,.8,.2,1), box-shadow .2s ease, background .2s ease, color .2s ease;
   }
-  .chip.active{ color:var(--vault); border-color:transparent; }
-  .chip[data-r="all"].active{ background:linear-gradient(120deg,var(--paper),#cfc9ba); }
-  .chip[data-r="common"].active{ background:linear-gradient(120deg,var(--r-common),#88ad91); color:#08130c; }
-  .chip[data-r="rare"].active{ background:linear-gradient(120deg,var(--r-rare),#93b0d9); color:#08111d; }
-  .chip[data-r="epic"].active{ background:linear-gradient(120deg,var(--r-epic),#c398d1); color:#160c1a; }
-  .chip[data-r="legendary"].active{ background:linear-gradient(120deg,var(--gold),var(--gold-hi)); color:#241a06; }
+  .chip.active{
+    color:#0a0a0a; border-color:transparent; transform:translateY(-1px);
+    background: linear-gradient(160deg,#fdfdfb,#c9c9c2);
+    box-shadow: 0 8px 18px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.9);
+  }
+  .chip:active{ transform:translateY(1px) scale(.96); }
 
   .panel{display:none;}
   .panel.active{display:block;}
@@ -92,95 +102,149 @@
   .section-row span{ font-size:12px; color:var(--muted); font-family:'Space Mono', monospace; }
 
   /* ---------- lots ---------- */
-  .lots{ display:flex; flex-direction:column; gap:16px; }
+  .lots{ display:flex; flex-direction:column; gap:14px; }
 
   .lot{
     --mx:50%; --my:35%;
     background: linear-gradient(165deg, var(--surface-hi), var(--surface));
     border:1px solid var(--line);
-    border-radius:20px;
-    padding:22px 20px;
+    border-radius:22px;
+    padding:18px 18px 20px;
     position:relative;
     overflow:hidden;
+    text-align:center;
     backdrop-filter: blur(16px) saturate(140%);
     -webkit-backdrop-filter: blur(16px) saturate(140%);
-    box-shadow: 0 24px 48px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.05);
+    box-shadow: 0 24px 48px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.045);
     opacity:0; will-change:transform;
     animation: lotIn .55s cubic-bezier(.2,.8,.2,1) forwards;
     transition: box-shadow .3s ease, border-color .3s ease;
   }
   @keyframes lotIn{ from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:translateY(0);} }
 
-  /* holographic sheen that tracks touch/pointer */
   .lot::after{
-    content:''; position:absolute; inset:0; pointer-events:none; opacity:0;
-    background: radial-gradient(340px 340px at var(--mx) var(--my),
-      rgba(255,255,255,.14), rgba(214,180,120,.08) 32%, transparent 62%);
+    content:''; position:absolute; inset:0; pointer-events:none; opacity:0; border-radius:inherit;
+    background: conic-gradient(from 0deg at var(--mx) var(--my),
+      #ff5f6d, #ffc371, #f6f271, #6dd5a8, #6dbfed, #a08cff, #ff5f6d);
+    mix-blend-mode: color-dodge;
+    -webkit-mask: radial-gradient(220px 220px at var(--mx) var(--my), #000 0%, transparent 70%);
+            mask: radial-gradient(220px 220px at var(--mx) var(--my), #000 0%, transparent 70%);
     transition: opacity .35s ease;
   }
-  .lot.tilting::after{ opacity:1; }
-  .lot.tilting{ border-color:rgba(214,180,120,.32); box-shadow: 0 30px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08); }
+  .lot.tilting::after{ opacity:.35; }
+  .lot.tilting{ border-color:rgba(255,255,255,.2); box-shadow: 0 30px 60px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.08); }
 
-  .lot.rarity-legendary{ border-color:rgba(214,180,120,.24); }
-  .lot.rarity-legendary::before{
-    content:''; position:absolute; inset:-1px; border-radius:20px; padding:1px; pointer-events:none;
-    background: conic-gradient(from calc(var(--mx) * 0deg), var(--gold-deep), var(--gold-hi), var(--gold-deep), var(--gold-hi), var(--gold-deep));
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor; mask-composite: exclude;
-    opacity:.5; animation: foilTurn 7s linear infinite;
-  }
-  @keyframes foilTurn{ to{ background-position: 200% 0; } }
+  .lot-head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:14px; position:relative; z-index:1; text-align:left; }
+  .lot-no{ font-family:'Space Mono', monospace; font-size:11px; color:var(--muted-dim); letter-spacing:.02em; }
+  .lot-stock{ font-size:11px; color:var(--muted); }
+  .lot.is-sold .lot-stock{ color:#a37974; }
 
-  .lot-head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:11px; position:relative; z-index:1; }
-  .lot-no{ font-family:'Space Mono', monospace; font-size:11.5px; color:var(--muted-dim); letter-spacing:.02em; }
-  .lot-stock{ font-size:11.5px; color:var(--muted); }
-  .lot.is-sold .lot-stock{ color:#b17d76; }
-
-  /* glass photo frame — for lots that carry an image */
+  /* ---------- sealed glass capsule photo ---------- */
   .glass-frame{
     --mx:50%; --my:35%;
-    width:100%; aspect-ratio:1/1; border-radius:15px; overflow:hidden;
-    position:relative; margin-bottom:17px; z-index:1;
-    background: rgba(255,255,255,.03);
-    border:1px solid rgba(214,180,120,.18);
-    box-shadow: 0 26px 50px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.1);
-    transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease;
+    width:52%; margin:2px auto 16px; aspect-ratio:3/4;
+    border-radius:50% 50% 44% 44% / 28% 28% 30% 30%;
+    position:relative; overflow:hidden; z-index:1;
+    background: linear-gradient(180deg,#151515,#020202);
+    border:1px solid rgba(255,255,255,.16);
+    box-shadow:
+      0 20px 40px rgba(0,0,0,.65),
+      inset 0 2px 5px rgba(255,255,255,.08),
+      inset 0 -16px 26px rgba(0,0,0,.55);
+    transition: transform .4s cubic-bezier(.2,.8,.2,1);
   }
-  .glass-frame img{ width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(.08) contrast(1.06) saturate(1.02); }
-  .glass-frame::after{
-    content:''; position:absolute; inset:0; pointer-events:none;
-    background: radial-gradient(260px 260px at var(--mx) var(--my), rgba(255,255,255,.35), rgba(255,255,255,0) 55%),
-                linear-gradient(135deg, rgba(255,255,255,.14), transparent 50%);
-    mix-blend-mode: overlay;
+  .glass-frame img{ width:100%; height:100%; object-fit:cover; display:block; filter:grayscale(.12) contrast(1.08); }
+
+  /* static glass sheen, diagonal */
+  .glass-frame::before{
+    content:''; position:absolute; inset:0; z-index:2; pointer-events:none;
+    background: linear-gradient(118deg, transparent 30%, rgba(255,255,255,.15) 46%, transparent 62%);
   }
+
+  /* metal seal cap at the top of the capsule */
+  .frame-seal{
+    position:absolute; top:0; left:0; right:0; height:17%; z-index:3;
+    background: linear-gradient(180deg,#efefe9 0%, #b6b6af 45%, #46453f 100%);
+    box-shadow: inset 0 -3px 5px rgba(0,0,0,.5), 0 3px 8px rgba(0,0,0,.5);
+    border-radius:50% 50% 0 0 / 100% 100% 0 0;
+  }
+  .frame-seal i{
+    position:absolute; left:50%; top:46%; width:16px; height:16px; transform:translate(-50%,-50%);
+    border-radius:50%; background:radial-gradient(circle at 34% 28%, #fff, #9b9b94 58%, #2c2c29 100%);
+    box-shadow:0 2px 3px rgba(0,0,0,.55);
+  }
+
+  /* looping glint sweep across the glass */
+  .frame-glint{
+    position:absolute; top:-30%; left:-45%; width:26%; height:160%; z-index:2; pointer-events:none;
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,.55), transparent);
+    transform: rotate(14deg);
+    animation: glintSweep 4.8s ease-in-out infinite;
+  }
+  @keyframes glintSweep{
+    0%, 55% { left:-45%; opacity:0; }
+    62% { opacity:.75; }
+    82% { left:135%; opacity:0; }
+    100% { left:135%; opacity:0; }
+  }
+
+  /* touch-tracked holographic highlight */
+  .frame-holo{
+    position:absolute; inset:0; z-index:2; pointer-events:none; opacity:0; border-radius:inherit;
+    background: conic-gradient(from 0deg at var(--mx) var(--my),
+      #ff5f6d, #ffc371, #f6f271, #6dd5a8, #6dbfed, #a08cff, #ff5f6d);
+    mix-blend-mode: color-dodge;
+    -webkit-mask: radial-gradient(150px 150px at var(--mx) var(--my), #000 0%, transparent 72%);
+            mask: radial-gradient(150px 150px at var(--mx) var(--my), #000 0%, transparent 72%);
+    transition: opacity .35s ease;
+  }
+  .glass-frame.tilting .frame-holo{ opacity:.55; }
   .glass-frame:active{ transform:scale(.96); }
 
-  .lot h3{ font-family:'Fraunces', serif; font-weight:600; font-size:19px; margin:0 0 11px; letter-spacing:-.1px; position:relative; z-index:1; }
+  .lot h3{ font-family:'Fraunces', serif; font-weight:600; font-size:18px; margin:0 0 5px; letter-spacing:-.1px; position:relative; z-index:1; }
 
-  .rarity-rule{ height:2px; background:var(--r-common); margin-bottom:15px; width:22px; position:relative; z-index:1; }
-  .lot.rarity-rare .rarity-rule{ background:var(--r-rare); width:38px; }
-  .lot.rarity-epic .rarity-rule{ background:var(--r-epic); width:56px; height:3px; }
-  .lot.rarity-legendary .rarity-rule{ background:linear-gradient(90deg, var(--gold-deep), var(--gold-hi)); width:84px; height:3px; }
+  .rarity-label{ display:block; font-size:11.5px; font-style:italic; font-family:'Fraunces', serif; color:var(--muted); margin-bottom:12px; position:relative; z-index:1; }
 
-  .lot-desc{ font-size:13.5px; line-height:1.65; color:#c9c3b4; margin:0 0 19px; max-width:46ch; position:relative; z-index:1; }
+  .rarity-rule{ display:none; }
 
-  .lot-foot{ display:flex; justify-content:space-between; align-items:flex-end; gap:12px; position:relative; z-index:1; }
-  .rarity-label{ font-size:12px; font-style:italic; font-family:'Fraunces', serif; color:var(--muted); }
-  .lot-deal{ display:flex; align-items:center; gap:12px; flex-shrink:0; }
-  .price{ font-family:'Space Mono', monospace; font-size:14px; white-space:nowrap; color:var(--paper); }
-  .price b{ font-size:16.5px; font-weight:700; color:var(--gold-hi); }
-  .price .asset{ color:var(--muted); font-size:11.5px; margin-left:3px; }
+  .lot-desc{ font-size:13px; line-height:1.6; color:#c7c6c0; margin:0 auto 18px; max-width:32ch; position:relative; z-index:1; }
 
+  .price-big{ display:flex; align-items:baseline; justify-content:center; gap:6px; margin-bottom:14px; position:relative; z-index:1; }
+  .price-big .num{ font-family:'Fraunces', serif; font-size:38px; font-weight:600; letter-spacing:-.8px; line-height:1; }
+  .price-big .cur{ font-family:'Space Mono', monospace; font-size:12px; color:var(--muted); }
+  .lot.is-sold .price-big .num{ color:var(--muted-dim); }
+
+  /* ---------- buy button: premium keycap with shine + holo ring ---------- */
   .buy-btn{
-    border:1px solid var(--gold); background:transparent; color:var(--paper);
-    font-weight:700; font-size:12.5px; padding:10px 18px; border-radius:10px; cursor:pointer;
-    transition:background .18s ease, transform .15s cubic-bezier(.2,.8,.2,1), box-shadow .18s ease, color .18s ease;
-    white-space:nowrap; letter-spacing:.01em;
+    position:relative; isolation:isolate; z-index:1; width:100%;
+    display:inline-flex; align-items:center; justify-content:center; gap:7px;
+    border:1px solid rgba(255,255,255,.1);
+    background: linear-gradient(180deg,#1a1a1a 0%, #050505 100%);
+    color:var(--paper);
+    font-weight:800; font-size:12.5px; padding:13px 20px; border-radius:13px; cursor:pointer;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.07), inset 0 -3px 0 rgba(0,0,0,.55), 0 10px 22px rgba(0,0,0,.5);
+    transition: transform .16s cubic-bezier(.2,.8,.2,1), box-shadow .2s ease;
+    white-space:nowrap; letter-spacing:.01em; overflow:hidden;
   }
-  .buy-btn:hover:not(:disabled){ background:linear-gradient(120deg,var(--gold),var(--gold-hi)); color:#241a06; box-shadow:0 10px 24px rgba(206,163,101,.28); }
-  .buy-btn:active:not(:disabled){ transform:scale(.93); }
-  .buy-btn:disabled{ border-color:var(--line-soft); color:var(--muted-dim); cursor:default; }
-  .buy-btn.owned{ border-style:dashed; border-color:var(--muted-dim); }
+  .buy-btn .ic{ width:11px; height:11px; flex-shrink:0; opacity:.9; }
+  .buy-btn::before{
+    content:''; position:absolute; inset:-1px; border-radius:14px; padding:1px; z-index:-1;
+    background: conic-gradient(from 0deg, #ff5f6d, #ffc371, #f6f271, #6dd5a8, #6dbfed, #a08cff, #ff5f6d);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    opacity:0; transition:opacity .25s ease;
+  }
+  .buy-btn::after{
+    content:''; position:absolute; top:0; left:-60%; width:35%; height:100%;
+    background: linear-gradient(120deg, transparent, rgba(255,255,255,.16), transparent);
+    transform: skewX(-20deg); transition: left .55s ease;
+  }
+  .buy-btn:hover:not(:disabled)::before{ opacity:1; }
+  .buy-btn:hover:not(:disabled)::after{ left:130%; }
+  .buy-btn:hover:not(:disabled){ transform:translateY(-2px); box-shadow: inset 0 1px 0 rgba(255,255,255,.09), inset 0 -3px 0 rgba(0,0,0,.55), 0 16px 30px rgba(0,0,0,.6); }
+  .buy-btn:active:not(:disabled){ transform:translateY(1px) scale(.97); box-shadow: inset 0 1px 0 rgba(255,255,255,.05), inset 0 -1px 0 rgba(0,0,0,.5), 0 6px 14px rgba(0,0,0,.5); }
+  .buy-btn:disabled{ border-color:var(--line-soft); color:var(--muted-dim); cursor:default; background:linear-gradient(180deg,#111,#070707); box-shadow:none; }
+  .buy-btn.owned{ border-style:dashed; border-color:var(--muted-dim); background:transparent; box-shadow:none; }
 
   /* ---------- inventory ---------- */
   .owned-list{ display:flex; flex-direction:column; gap:13px; }
@@ -194,21 +258,22 @@
   .owned-item h4{ font-family:'Fraunces', serif; font-weight:600; font-size:16.5px; margin:0 0 5px; }
 
   .empty-state{ text-align:center; padding:64px 20px; color:var(--muted); }
-  .empty-state .orn{ font-size:13px; letter-spacing:.3em; color:var(--gold); margin-bottom:16px; }
+  .empty-state .orn{ font-size:13px; letter-spacing:.3em; color:var(--muted-dim); margin-bottom:16px; }
   .empty-state p{ margin:0 auto; font-size:14px; line-height:1.65; max-width:32ch; }
 
   .toast{
     position:fixed; left:50%; bottom:26px; transform:translate(-50%, 24px);
-    background:linear-gradient(120deg,var(--paper),#dcd5c4); color:#171308; padding:14px 20px; border-radius:12px;
+    background:linear-gradient(120deg,var(--paper),#dcdbd5); color:#111; padding:14px 20px; border-radius:12px;
     font-size:13.5px; font-weight:700; opacity:0;
     transition:opacity .28s ease, transform .28s ease; pointer-events:none; z-index:50;
-    box-shadow:0 24px 44px rgba(0,0,0,.55); max-width:90vw;
+    box-shadow:0 24px 44px rgba(0,0,0,.6); max-width:90vw;
   }
   .toast.show{opacity:1; transform:translate(-50%, 0);}
 
   @media (prefers-reduced-motion: reduce){
     .lot, .owned-item { animation: none !important; opacity:1; }
-    .lot.rarity-legendary::before { animation: none; }
+    .tab-indicator{ transition:none; }
+    .frame-glint{ animation:none; opacity:0; }
   }
 </style>
 </head>
@@ -224,7 +289,8 @@
     </div>
   </div>
 
-  <div class="tabs">
+  <div class="tabs" id="tabs">
+    <div class="tab-indicator" id="tabIndicator"></div>
     <div class="tab active" data-tab="market">Лоты</div>
     <div class="tab" data-tab="resale">Перепродажа</div>
     <div class="tab" data-tab="inventory">Мои <span id="invCount"></span></div>
@@ -261,6 +327,7 @@
 
 <script>
 const LABELS = { common:'обычная', rare:'редкая', epic:'эпическая', legendary:'легендарная' };
+const ICON = '<svg class="ic" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 L20 9 L12 22 L4 9 Z"/></svg>';
 
 const tg = window.Telegram ? window.Telegram.WebApp : null;
 if (tg) { tg.ready(); tg.expand(); }
@@ -276,6 +343,8 @@ const marketGrid = document.getElementById('marketGrid');
 const resaleList = document.getElementById('resaleList');
 const invList = document.getElementById('invList');
 const toast = document.getElementById('toast');
+const tabsEl = document.getElementById('tabs');
+const tabIndicator = document.getElementById('tabIndicator');
 
 document.getElementById('resaleCount').textContent = '0 предложений';
 resaleList.innerHTML = '<div class="empty-state"><div class="orn">· · ·</div><p>Раздел перепродажи пока не подключён.</p></div>';
@@ -309,7 +378,14 @@ async function loadInventory(){
   renderInventory();
 }
 
-// holo-tilt: карточка/рамка отслеживает палец или курсор и подсвечивается бликом, как фольга
+// плавающий индикатор под активной вкладкой
+function moveTabIndicator(el){
+  if (!el) return;
+  tabIndicator.style.width = el.offsetWidth + 'px';
+  tabIndicator.style.transform = 'translateX(' + el.offsetLeft + 'px)';
+}
+
+// радужный блик: карточка/капсула отслеживает палец или курсор и подсвечивается, как голограмма
 function attachTilt(el, strength){
   const s = strength || 0;
   const onMove = (e) => {
@@ -341,23 +417,24 @@ function renderMarket(){
         <span class="lot-no">Лот ${String(i+1).padStart(2,'0')}</span>
         <span class="lot-stock">${soldOut ? 'раскуплено' : 'осталось ' + it.left}</span>
       </div>
-      ${it.image ? `<div class="glass-frame" data-tilt><img src="${it.image}" alt="${it.name}" loading="lazy"></div>` : ''}
+      ${it.image ? `
+      <div class="glass-frame" data-tilt>
+        <img src="${it.image}" alt="${it.name}" loading="lazy">
+        <span class="frame-seal"><i></i></span>
+        <span class="frame-glint" style="animation-delay:${(i%4)*1.1}s"></span>
+        <span class="frame-holo"></span>
+      </div>` : ''}
       <h3>${it.name}</h3>
-      <div class="rarity-rule"></div>
+      <span class="rarity-label">${LABELS[it.rarity] || ''}</span>
       <p class="lot-desc">${it.description || ''}</p>
-      <div class="lot-foot">
-        <span class="rarity-label">${LABELS[it.rarity] || ''}</span>
-        <div class="lot-deal">
-          <span class="price"><b>${it.price}</b><span class="asset">${it.asset || 'USDT'}</span></span>
-          <button class="buy-btn ${owned?'owned':''}" ${soldOut||owned?'disabled':''} onclick="buy('${it.id}')">
-            ${owned ? 'у вас есть' : soldOut ? 'нет мест' : 'купить'}
-          </button>
-        </div>
-      </div>
+      <div class="price-big"><span class="num">${it.price}</span><span class="cur">${it.asset || 'USDT'}</span></div>
+      <button class="buy-btn ${owned?'owned':''}" ${soldOut||owned?'disabled':''} onclick="buy('${it.id}')">
+        ${owned ? 'у вас есть' : soldOut ? 'нет мест' : ICON + 'купить'}
+      </button>
     </article>`;
   }).join('');
 
-  // сильный блик на стеклянной рамке, лёгкий 3D-наклон на самой карточке
+  // сильный блик на капсуле, лёгкий 3D-наклон на самой карточке
   marketGrid.querySelectorAll('[data-tilt]').forEach(el => attachTilt(el, 10));
   marketGrid.querySelectorAll('.lot').forEach(el => attachTilt(el, 3));
 }
@@ -439,6 +516,7 @@ document.querySelectorAll('.tab').forEach(tab => {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     tab.classList.add('active');
     document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+    moveTabIndicator(tab);
   });
 });
 
@@ -450,6 +528,10 @@ document.querySelectorAll('.chip').forEach(chip => {
     renderMarket();
   });
 });
+
+window.addEventListener('resize', () => moveTabIndicator(document.querySelector('.tab.active')));
+window.addEventListener('load', () => moveTabIndicator(document.querySelector('.tab.active')));
+moveTabIndicator(document.querySelector('.tab.active'));
 
 loadCatalog();
 loadInventory();
