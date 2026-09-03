@@ -43,7 +43,7 @@ app.get('/gift-market.html', (req, res) => res.sendFile(path.join(__dirname, 'gi
 app.get('/api/catalog', (req, res) => {
   res.json(ITEMS.map((it) => ({ ...it, left: getStockLeft(it.id), asset: CRYPTO_ASSET })));
 });
-
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.get('/api/inventory', (req, res) => {
   const user = validateInitData(req.query.initData, process.env.BOT_TOKEN);
   if (!user) return res.status(401).json({ error: 'bad_init_data' });
