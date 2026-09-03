@@ -41,7 +41,7 @@ app.get('/gift-market.html', (req, res) => res.sendFile(path.join(__dirname, 'gi
 // ---------- API для gift-market.html ----------
 
 app.get('/api/catalog', (req, res) => {
-  res.json(ITEMS.map((it) => ({ ...it, left: getStockLeft(it.id) })));
+  res.json(ITEMS.map((it) => ({ ...it, left: getStockLeft(it.id), asset: CRYPTO_ASSET })));
 });
 
 app.get('/api/inventory', (req, res) => {
