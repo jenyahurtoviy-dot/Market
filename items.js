@@ -10,7 +10,8 @@ const ITEMS = [
   { id: 'medal', name: 'Знак старожила', rarity: 'epic', price: 45,
     description: 'Вручается тем, кто был здесь с самого начала. Тираж строго ограничен.' },
   { id: 'crown', name: 'Корона основателя', rarity: 'legendary', price: 75,
-    description: 'Символ первых. Больше выпускаться не будет.' }
+    description: 'Символ первых. Больше выпускаться не будет.',
+    image: '/images/founder.jpg' }
 ];
 
 function getItem(id) {
